@@ -11,12 +11,12 @@ import Users from "./pages/Users"
 import AppLayout from "./ui/AppLayout"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-
+// sets up the cache for the remote state behind the scene.
 const queryClient = new QueryClient({
   // configuring the default options for react-query
   defaultOptions: {
     queries: {
-      staleTime: 60*1000,
+      staleTime: 0,
     }
   }
 })

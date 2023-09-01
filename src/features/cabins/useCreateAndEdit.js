@@ -10,7 +10,7 @@ export default function useCreateAndEdit (isEditing , cabinTobeEdited, setEditSh
         queryClient.invalidateQueries({
             queryKey: ["cabins"]
         })
-        toast.success(isEditing ? "cabin edited successfully" : setCreateShowForm ? "New cabin created successfully" : "cabin duplicated  successfully")
+        toast.success(isEditing ? "cabin edited successfully" : setCreateShowForm ? " New cabin created successfully" : "cabin duplicated  successfully")
         isEditing ? setEditShowForm(false) : setCreateShowForm && setCreateShowForm(false)
         },
         onError: (err) => toast.error(err.message)

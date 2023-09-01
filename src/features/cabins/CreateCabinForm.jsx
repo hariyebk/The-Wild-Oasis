@@ -6,10 +6,8 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createOrEditCabin } from "../../services/apiCabins";
-import { toast } from "react-hot-toast";
 import Spinner from "../../ui/Spinner";
+import useCreateAndEdit from "./useCreateAndEdit";
 
 const FormRow = styled.div`
   display: grid;
@@ -48,27 +46,18 @@ const Error = styled.span`
 `;
 
 function CreateCabinForm({setCreateShowForm, cabinTobeEdited = {}, setEditShowForm}) {
+  // If the cabin has an Id , it means  it's going to be edited
   const isEditing = Boolean(cabinTobeEdited.id)
-  const queryClient = useQueryClient()
+
   const {register, handleSubmit, getValues, formState} = useForm({
     defaultValues: isEditing && cabinTobeEdited
-  })
-  const {mutate, isLoading} = useMutation({
-    mutationFn: (data) =>  isEditing ? createOrEditCabin(data, cabinTobeEdited.id) : createOrEditCabin(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"]
-      })
-      toast.success(isEditing ? "cabin edited successfully" : "New cabin created successfully")
-      isEditing ? setEditShowForm(false) : setCreateShowForm(false)
-    },
-    onError: (err) => toast.error(err.message)
-  })
+    })
+  // cutom hook to Create and Edit cabin
+  const {isLoading, mutate} = useCreateAndEdit(isEditing, cabinTobeEdited, setEditShowForm, setCreateShowForm)
 
   const {errors} = formState
 
   function onSubmit(data){
-    // console.log(getValues().image)
     // console.log(data)
     isEditing ? typeof getValues().image === "object" ? mutate({...data, image: data.image[0]}) : mutate(data) : mutate({...data, image: data.image[0]})
   }

@@ -4,23 +4,21 @@ import CabinTable from "../features/cabins/CabinTable";
 import Button from "../ui/Button";
 import { useState } from "react";
 import CreateCabinForm from "../features/cabins/CreateCabinForm";
-import { useQuery } from "@tanstack/react-query";
-import { getCabins } from "../services/apiCabins";
+import useGetCabinData from "../features/cabins/useGetCabinData";
+import { toast } from "react-hot-toast";
 
 function Cabins() {
   const [showForm, setShowForm] = useState(false)
-  const {isLoading, data: cabin, error} = useQuery({
-    queryKey: ["cabins"],
-    queryFn: getCabins
-  })
+  const {isFetching, cabin, error} = useGetCabinData()
+  if(error) return toast.error("Can't get cabins data")
   return (
     <>
       <Row type="horizontal">
         <Heading as="h1">All cabins</Heading>
         <p> Filter / Sort</p>
       </Row>
-        <CabinTable cabin={cabin} isLoading={isLoading} />
-        {!isLoading && <Button onClick={() => setShowForm(!showForm)}>
+        <CabinTable cabin={cabin} isLoading={isFetching} error = {error} />
+        {!isFetching && <Button onClick={() => setShowForm(!showForm)}>
           {showForm ? "Hide Form": "Add new Cabin"}
         </Button>}
         {showForm && <CreateCabinForm setCreateShowForm = {setShowForm}/>}

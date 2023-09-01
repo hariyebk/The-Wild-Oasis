@@ -26,8 +26,8 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
-function CabinTable({isLoading, cabin}) {
-  if(isLoading) return <Spinner />
+function CabinTable({isLoading, cabin, error}) {
+  if(!error && isLoading) return <Spinner />
   return (
     <Table role = "table">
       <TableHeader role = "row">

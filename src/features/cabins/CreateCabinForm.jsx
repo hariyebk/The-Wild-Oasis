@@ -5,6 +5,11 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
+import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createOrEditCabin } from "../../services/apiCabins";
+import { toast } from "react-hot-toast";
+import Spinner from "../../ui/Spinner";
 
 const FormRow = styled.div`
   display: grid;
@@ -42,45 +47,102 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm() {
+function CreateCabinForm({setCreateShowForm, cabinTobeEdited = {}, setEditShowForm}) {
+  const isEditing = Boolean(cabinTobeEdited.id)
+  const queryClient = useQueryClient()
+  const {register, handleSubmit, getValues, formState} = useForm({
+    defaultValues: isEditing && cabinTobeEdited
+  })
+  const {mutate, isLoading} = useMutation({
+    mutationFn: (data) =>  isEditing ? createOrEditCabin(data, cabinTobeEdited.id) : createOrEditCabin(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["cabins"]
+      })
+      toast.success(isEditing ? "cabin edited successfully" : "New cabin created successfully")
+      isEditing ? setEditShowForm(false) : setCreateShowForm(false)
+    },
+    onError: (err) => toast.error(err.message)
+  })
+
+  const {errors} = formState
+
+  function onSubmit(data){
+    // console.log(getValues().image)
+    // console.log(data)
+    isEditing ? typeof getValues().image === "object" ? mutate({...data, image: data.image[0]}) : mutate(data) : mutate({...data, image: data.image[0]})
+  }
+
+  function onError(errors){
+    console.log(errors.message)
+  }
+
+  if(isLoading) return <Spinner />
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
-        <Input type="text" id="name" />
+        <Input type="text" id="name" disabled = {isLoading}  {...register("name", {
+          required: "This field is required"
+        })} />
+        {errors?.name?.message && <Error>{errors.name.message}</Error>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="maxCapacity">Maximum capacity</Label>
-        <Input type="number" id="maxCapacity" />
+        <Input type="number" id="maxCapacity"  disabled = {isLoading} {...register("maxCapacity", {
+          required: "This field is required",
+          min: {
+            value: 1,
+            message: "The minimum capacity should 1"
+          }
+        })} />
+        {errors?.maxCapacity?.message && <Error>{errors.maxCapacity.message}</Error>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="regularPrice">Regular price</Label>
-        <Input type="number" id="regularPrice" />
+        <Input type="number" id="regularPrice"  disabled = {isLoading} {...register("regularPrice", {
+          required: "This field is required",
+          min: {
+            value: 1,
+            message: "The minimum capacity should 1"
+          }
+        })} />
+        {errors?.regularPrice?.message && <Error>{errors.regularPrice.message}</Error>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="discount">Discount</Label>
-        <Input type="number" id="discount" defaultValue={0} />
+        <Input type="number" id="discount"  defaultValue= {0} disabled = {isLoading} {...register("discount", {
+          required: "This field is required",
+          validate: value => value < +getValues().regularPrice || "Discount should be less than the Regular price",
+        })} />
+        {errors?.discount?.message && <Error>{getValues().discount === "" && errors?.discount?.message}</Error>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="description">Description for website</Label>
-        <Textarea type="number" id="description" defaultValue="" />
+        <Textarea type="number" id="description" disabled = {isLoading} defaultValue= "" {...register("description", {
+          required: "This field is required"
+        })}/>
+        {errors?.description?.message && <Error>{errors.description.message}</Error>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="image">Cabin photo</Label>
-        <FileInput id="image" accept="image/*" />
+        <FileInput id="image" accept="image/*"  disabled = {isLoading} {...register("image", {
+          required: isEditing ? false : "This field is required"
+        })} />
+        {errors?.image?.message && <Error>{errors.image.message}</Error>}
       </FormRow>
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" disable = {isLoading}>
           Cancel
         </Button>
-        <Button>Edit cabin</Button>
+        <Button disable = {isLoading} >{isEditing ? "Edit cabin" : "Add Cabin"}</Button>
       </FormRow>
     </Form>
   );

@@ -29,7 +29,7 @@ function UpdateSettingsForm() {
         defaultValue={settings?.maxBookingLength} onBlur={(e) => handleUpdate(e, 'maxBookingLength')} disabled = {updatedField === 'maxBookingLength'&& isUpdating }/>
       </FormRow>
       <FormRow label='Maximum guests/booking'>
-        <Input type='number' id='maxGuestperBooking' defaultValue={settings?.maxGuestperBooking}onBlur={(e) => handleUpdate(e, 'maxGuestperBooking')} disabled = {updatedField === 'maxGuestperBooking' && isUpdating}
+        <Input type='number' id='maxGuestperBooking' defaultValue={settings?.maxGuestperBooking} onBlur={(e) => handleUpdate(e, 'maxGuestperBooking')} disabled = {updatedField === 'maxGuestperBooking' && isUpdating}
         />
       </FormRow>
       <FormRow label='Breakfast price'>

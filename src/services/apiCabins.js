@@ -1,4 +1,3 @@
-import { toast } from "react-hot-toast";
 import supabase, {supabaseUrl} from "./supabase";
 
 export async function getCabins(){
@@ -7,7 +6,6 @@ export async function getCabins(){
         console.log(error)
         throw new Error("can't load cabins data")
     }
-
     return data
 }
 

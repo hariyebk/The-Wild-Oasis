@@ -5,11 +5,11 @@ import FileInput from "../../ui/FileInput";
 import FormRow from "../../ui/FormRow";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
-import Spinner from "../../ui/Spinner";
 import useCreateAndEdit from "./useCreateAndEdit";
+import Modal from "../../ui/Modal";
 
 
-function CreateCabinForm({setCreateShowForm, cabinTobeEdited = {}, setEditShowForm}) {
+function CreateCabinForm({cabinTobeEdited = {}, setEditShowForm, setIsModalOpen}) {
   // If the cabin has an Id , it means  it's going to be edited
   const isEditing = Boolean(cabinTobeEdited.id)
 
@@ -17,7 +17,7 @@ function CreateCabinForm({setCreateShowForm, cabinTobeEdited = {}, setEditShowFo
     defaultValues: isEditing && cabinTobeEdited
     })
   // cutom hook to Create and Edit cabin
-  const {isLoading, mutate} = useCreateAndEdit(isEditing, cabinTobeEdited, setEditShowForm, setCreateShowForm)
+  const {isLoading, mutate} = useCreateAndEdit(isEditing, cabinTobeEdited, setEditShowForm, setIsModalOpen)
 
   const {errors} = formState
 
@@ -29,10 +29,15 @@ function CreateCabinForm({setCreateShowForm, cabinTobeEdited = {}, setEditShowFo
   function onError(errors){
     console.log(errors.message)
   }
+  function handleCancel(e){
+    e.preventDefault()
+    isEditing ? setEditShowForm(false) : setIsModalOpen(false)
+  }
 
-  if(isLoading) return <Spinner />
+  if(isLoading) return <Modal />
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type = {setIsModalOpen ? "modal" : "regular"}>
       <FormRow label = "Cabin name" error = {errors?.name?.message}>
         <Input type="text" id="name" disabled = {isLoading}  {...register("name", {
           required: "This field is required"
@@ -80,7 +85,7 @@ function CreateCabinForm({setCreateShowForm, cabinTobeEdited = {}, setEditShowFo
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset" disable = {isLoading}>
+        <Button variation="secondary" type="reset" disable = {isLoading} onClick= {handleCancel}>
           Cancel
         </Button>
         <Button disable = {isLoading} >{isEditing ? "Edit cabin" : "Add Cabin"}</Button>

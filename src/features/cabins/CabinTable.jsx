@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
+import useGetCabinData from "./useGetCabinData";
+import { toast } from "react-hot-toast";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -26,8 +28,10 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
-function CabinTable({isLoading, cabin, error}) {
-  if(!error && isLoading) return <Spinner />
+function CabinTable() {
+  const {isFetching, cabin, error} = useGetCabinData()
+  error && toast.error("Can't get cabins data")
+  isFetching && <Spinner />
   return (
     <Table role = "table">
       <TableHeader role = "row">
@@ -38,7 +42,7 @@ function CabinTable({isLoading, cabin, error}) {
         <div>Discount</div>
         <div></div>
       </TableHeader>
-      {cabin.map(cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>)}
+      {cabin?.map(cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>)}
     </Table>
   )
 }

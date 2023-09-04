@@ -8,7 +8,6 @@ import useCreateAndEdit from "./useCreateAndEdit";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete"
 import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
 
 const Img = styled.img`
   display: block;
@@ -67,13 +66,13 @@ function CabinRow({cabin}) {
         <Price>{formatCurrency(regularPrice)}</Price>
         <Discount>{formatCurrency(discount)}</Discount>
         <StyledDiv>
-          <Button variation = "secondary" size = "small" onClick={() => handleDuplicate()} disabled = {isDeleting}>
+          <Button variation = "secondary" size = "small" title = "Duplicate cabin" onClick={() => handleDuplicate()} disabled = {isDeleting}>
             <HiDocumentDuplicate />
           </Button>
           <Modal>
 
             <Modal.Open opensWindowName = "edit-form">
-                <Button variation = "secondary" size = "small"> 
+                <Button variation = "secondary" size = "small" title = "Edit cabin"> 
                     <HiOutlinePencilSquare />
                 </Button>
             </Modal.Open>
@@ -82,7 +81,7 @@ function CabinRow({cabin}) {
             </Modal.Window>
 
             <Modal.Open opensWindowName= "confirm-delete">
-                <Button variation = "danger" size = "small">
+                <Button variation = "danger" size = "small" title = "Delete cabin">
                     <HiTrash />
                 </Button>
             </Modal.Open>

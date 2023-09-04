@@ -4,9 +4,18 @@ import useGetCabinData from "./useGetCabinData";
 import { toast } from "react-hot-toast";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import {useSearchParams} from "react-router-dom"
 
 function CabinTable() {
-  const {isFetching, cabin, error} = useGetCabinData()
+  const {isFetching, cabin:cabins, error} = useGetCabinData()
+  const [searchParams] = useSearchParams()
+  const filterValue = searchParams.get("discount") || "all"
+  let filteredCabins
+
+  if(filterValue === "all") filteredCabins = cabins
+  if(filterValue === "no-discount") filteredCabins = cabins.filter(cabin => cabin.discount === 0)
+  if(filterValue === "with-discount") filteredCabins = cabins.filter(cabin => cabin.discount > 0)
+
   error && toast.error("Can't get cabins data")
   isFetching && <Spinner />
   return (
@@ -20,7 +29,7 @@ function CabinTable() {
           <div>Discount</div>
           <div></div>
         </Table.Header>
-        <Table.Body data = {cabin} render = {cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>}/>
+        <Table.Body data = {filteredCabins} render = {cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>}/>
       </Table>
     </Menus>
   )

@@ -1,6 +1,10 @@
 import styled from "styled-components";
+import {createContext, useState, useContext} from "react"
+import {HiEllipsisVertical} from "react-icons/hi2"
+import { createPortal } from "react-dom";
 
-const StyledMenu = styled.div`
+
+const Menu = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -60,3 +64,55 @@ const StyledButton = styled.button`
     transition: all 0.3s;
   }
 `;
+
+const MenusContext = createContext()
+function Menus({children}) {
+  const [openId , setOpenId] = useState("")
+  // Event handlers
+  const closeMenu = () => setOpenId("")
+  const openMenu = setOpenId
+
+  return <MenusContext.Provider value={{openId, closeMenu, openMenu}}>
+            {children}
+      </MenusContext.Provider>
+}
+
+function Toggle({id}){
+  const {openId, closeMenu, openMenu} = useContext(MenusContext)
+
+  const handleClick = () => { 
+    openId === "" || openId !== id ? openMenu(id) : closeMenu()
+  }
+
+  return <StyledToggle onClick = {handleClick}>
+        <HiEllipsisVertical />
+  </StyledToggle>
+
+}
+function List({children, id}){
+  const {openId} = useContext(MenusContext)
+  // Display the menu buttons if the current row is clicked
+  if(openId !== id) return
+  return createPortal (
+  <StyledList position = {{x: 20, y: 20}}>
+      {children}
+  </StyledList>, document.body
+  )
+}
+
+function Button({children}){
+  return (
+    <li>
+      <StyledButton>
+          {children}
+      </StyledButton>
+    </li>
+  ) 
+}
+
+Menus.Toggle = Toggle
+Menus.Menu = Menu
+Menus.List = List
+Menus.Button = Button
+
+export default Menus

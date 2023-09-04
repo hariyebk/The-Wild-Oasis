@@ -7,6 +7,7 @@ import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
 import useCreateAndEdit from "./useCreateAndEdit";
 import Modal from "../../ui/Modal";
+import Spinner from "../../ui/Spinner";
 
 
 function CreateCabinForm({cabinTobeEdited = {}, setEditShowForm, setIsModalOpen}) {
@@ -22,7 +23,6 @@ function CreateCabinForm({cabinTobeEdited = {}, setEditShowForm, setIsModalOpen}
   const {errors} = formState
 
   function onSubmit(data){
-    // console.log(data)
     isEditing ? typeof getValues().image === "object" ? mutate({...data, image: data.image[0]}) : mutate(data) : mutate({...data, image: data.image[0]})
   }
 
@@ -34,7 +34,14 @@ function CreateCabinForm({cabinTobeEdited = {}, setEditShowForm, setIsModalOpen}
     isEditing ? setEditShowForm(false) : setIsModalOpen(false)
   }
 
-  if(isLoading) return <Modal />
+  if(isLoading) return (
+    <Modal>
+      <Modal.Loader>
+          <Spinner />
+      </Modal.Loader>
+    </Modal>
+
+  )
 
   return (
     <Form onSubmit={handleSubmit(onSubmit, onError)} type = {setIsModalOpen ? "modal" : "regular"}>

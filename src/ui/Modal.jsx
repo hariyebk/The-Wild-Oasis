@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { HiXMark } from "react-icons/hi2"
 import { createPortal } from "react-dom";
-import {createContext, useContext, useState, cloneElement} from "react"
+import {createContext, useContext, useState, cloneElement, useRef, useEffect} from "react"
+import useModal from "../hooks/useOnClickOutside";
+import useOnClickOutside from "../hooks/useOnClickOutside";
 
 
 const StyledModal = styled.div`
@@ -53,6 +55,7 @@ right: 1.9rem;
 }
 `;
 
+
 const ModalContext = createContext()
 
 function Modal({children}) {
@@ -74,23 +77,32 @@ function Open ({children, opensWindowName}){
 }
 function Window({children, name}){
     const {openName, closeModal} = useContext(ModalContext)
+    const {ref} = useOnClickOutside(closeModal)
     // Portals in React provide a way to render a component's content into a different part of the DOM hierarchy, outside of its parent component. This can be useful in various scenarios where you need to render content at a different DOM location than the component's usual position. Portals are commonly used for creating modals, overlays, or pop-up components. These components often need to be rendered at the top level of the DOM hierarchy to ensure they appear on top of other content and are not affected by the component's z-index stacking context.
     if(openName !== name) return
     return createPortal(
         <Overlay>
-            <StyledModal>
+            <StyledModal ref = {ref}>
             <Button onClick = {() => closeModal()}>
                 <HiXMark />
             </Button>
-                {cloneElement(children, {setIsModalOpen : closeModal})}
+                {name === "cabin-form" ? cloneElement(children, {setIsModalOpen: closeModal}): name === "confirm-delete" ? cloneElement(children, {closeModal: closeModal}): cloneElement(children, {setEditShowForm: closeModal})} 
             </StyledModal>
         </Overlay>,
         document.body
     )
 }
+function Loader({children}){
+    return (
+        <Overlay>
+            {children}
+        </Overlay>
+    )
+}
 
 Modal.Open = Open
 Modal.Window = Window
+Modal.Loader = Loader
 
-
+export {ModalContext}
 export default Modal

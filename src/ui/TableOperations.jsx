@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import {createContext} from "react"
-import Filter from './Filter';
-import SortBy from '../features/cabins/SortBy';
+import {Children, createContext} from "react"
+import SortBy from './SortBy';
+import Filter from "./Filter"
+
 
 const StyledTableOperations = styled.div`
   display: flex;
@@ -10,13 +11,13 @@ const StyledTableOperations = styled.div`
 `;
 export const TableOperationsContext = createContext()
 const options = {
-    filterField: "discount",
-    filterOptions: [
+    CabinFilterField: "discount",
+    CabinFilterOptions: [
         {value: "all", label: "All"},
         {value: "no-discount", label: "No Discount"},
         {value: "with-discount", label: "With Discount"}
     ],
-    SortOptions: [
+    CabinSortOptions: [
         {value: "name-asc", label: "Sort by name(A-Z)"},
         {value: "name-dsc", label: "Sort by name(Z-A)"},
         {value: "regularPrice-asc", label: "Sort by Price(low to high)"},
@@ -25,18 +26,34 @@ const options = {
         {value: "maxCapacity-dsc", label: "Maximum capacity(high to low)"},
         {value: "discount-asc", label: "Discount(low to high)"},
         {value: "discount-dsc", label: "Discount(high to low)"}
+    ],
+    BookingFilterField: "status",
+    BookingFilterOptions: [
+        {value: "all", label: "All"},
+        {value: "checked-in", label: "Checked In"},
+        {value: "checked-out", label: "Checked Out"},
+        {value: "unconfirmed", label: "Unconfirmed"}
+    ],
+    BookingSortOptions: [
+      {value: "startDate-desc", label: "Sort by date (recent first)"},
+      {value: "startDate-asc", label: "Sort by date (earlier first)"},
+      {value: "totalPrice-desc", label: "Sort by amount (high to low)"},
+      {value: "totalPrice-asc", label: "Sort by amount (low to high)"}
     ]
 }
 
-function TableOperations() {
+function TableOperations({filter, sort}) {
   return <TableOperationsContext.Provider value={{
-    filterField: options.filterField,
-    filterOptions: options.filterOptions,
-    SortOptions: options.SortOptions
+    CabinFilterField: options.CabinFilterField,
+    CabinFilterOptions: options.CabinFilterOptions,
+    CabinSortOptions: options.CabinSortOptions,
+    BookingFilterField: options.BookingFilterField,
+    BookingFilterOptions: options.BookingFilterOptions,
+    BookingSortOptions: options.BookingSortOptions
   }}>
       <StyledTableOperations>
-            <Filter/>
-            <SortBy/>
+            <Filter filter= {filter} />
+            <SortBy sort= {sort} />
       </StyledTableOperations>
   </TableOperationsContext.Provider>
 }

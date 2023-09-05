@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { format, isToday } from "date-fns";
-
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
-
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 
@@ -46,14 +44,12 @@ function BookingRow({
     status,
     guests: { fullName: guestName, email },
     cabins: { name: cabinName },
-  },
-}) {
+  }}) {
   const statusToTagName = {
-    unconfirmed: "blue",
+    "unconfirmed": "blue",
     "checked-in": "green",
     "checked-out": "silver",
   };
-
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>

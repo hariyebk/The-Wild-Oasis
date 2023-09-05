@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import {useSearchParams} from "react-router-dom"
+import Empty from "../../ui/Empty"
 
 function CabinTable() {
   const {isFetching, cabin:cabins, error} = useGetCabinData()
@@ -18,11 +19,12 @@ function CabinTable() {
   if(filterValue === "with-discount") filteredCabins = cabins.filter(cabin => cabin.discount > 0)
 
   //2. Sort
-  const sortValue = searchParams.get("sortBy") || "startDate-asc"
+  const sortValue = searchParams.get("sortBy") || ""
   const [fieldName, direction] = sortValue.split("-") 
   const sortedCabins = filteredCabins?.sort((a,b) => direction === "asc" ? a[fieldName] - b[fieldName]: b[fieldName] - a[fieldName])
   if(error) return toast.error("Can't get cabins data")
   if(isFetching) return <Spinner />
+  if(cabins.length === 0) return <Empty resourceName = "cabins" />
   return (
     <Menus>
       <Table role = "table" columns= "0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">

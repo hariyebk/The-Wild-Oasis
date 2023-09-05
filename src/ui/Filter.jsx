@@ -38,17 +38,18 @@ const FilterButton = styled.button`
   }
 `;
 
-function Filter(){
+function Filter({filter}){
   const [searchParams, setSearchParams] = useSearchParams()
-  const {filterField, filterOptions} = useContext(TableOperationsContext)
-  const currentFilter = searchParams.get(filterField) || filterOptions[0].value
+  const {CabinFilterField, CabinFilterOptions, BookingFilterField, BookingFilterOptions } = useContext(TableOperationsContext)
+  const type = filter === "cabins" ? [CabinFilterField, CabinFilterOptions] : [BookingFilterField, BookingFilterOptions]
+  const currentFilter = searchParams.get(type.at(0)) || type.at(1)[0].value
   function handleClick(value){
-    searchParams.set(filterField, value)
+    searchParams.set(type.at(0), value)
     setSearchParams(searchParams)
   }
   return (
     <StyledFilter>
-        {filterOptions.map(option => <FilterButton onClick = {() => handleClick(option.value)} active = {currentFilter === option.value} disabled = {currentFilter === option.value} key = {option.value}> {option.label} </FilterButton>)}
+        {type.at(1).map(option => <FilterButton onClick = {() => handleClick(option.value)} active = {currentFilter === option.value} disabled = {currentFilter === option.value} key = {option.value}> {option.label} </FilterButton>)}
     </StyledFilter>
   )
 }

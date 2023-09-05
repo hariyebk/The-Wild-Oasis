@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components";
 import {useSearchParams} from "react-router-dom"
+import {useContext} from "react"
+import { TableOperationsContext } from "./TableOperations";
 
 
 const StyledFilter = styled.div`
@@ -36,16 +38,17 @@ const FilterButton = styled.button`
   }
 `;
 
-function Filter({filterField, options}){
+function Filter(){
   const [searchParams, setSearchParams] = useSearchParams()
-  const currentFilter = searchParams.get(filterField) || options[0].value
+  const {filterField, filterOptions} = useContext(TableOperationsContext)
+  const currentFilter = searchParams.get(filterField) || filterOptions[0].value
   function handleClick(value){
     searchParams.set(filterField, value)
     setSearchParams(searchParams)
   }
   return (
     <StyledFilter>
-        {options.map(option => <FilterButton onClick = {() => handleClick(option.value)} active = {currentFilter === option.value} key = {option.value}> {option.label} </FilterButton>)}
+        {filterOptions.map(option => <FilterButton onClick = {() => handleClick(option.value)} active = {currentFilter === option.value} disabled = {currentFilter === option.value} key = {option.value}> {option.label} </FilterButton>)}
     </StyledFilter>
   )
 }

@@ -10,14 +10,19 @@ function CabinTable() {
   const {isFetching, cabin:cabins, error} = useGetCabinData()
   const [searchParams] = useSearchParams()
   const filterValue = searchParams.get("discount") || "all"
+  //1. Filter
   let filteredCabins
 
   if(filterValue === "all") filteredCabins = cabins
   if(filterValue === "no-discount") filteredCabins = cabins.filter(cabin => cabin.discount === 0)
   if(filterValue === "with-discount") filteredCabins = cabins.filter(cabin => cabin.discount > 0)
 
-  error && toast.error("Can't get cabins data")
-  isFetching && <Spinner />
+  //2. Sort
+  const sortValue = searchParams.get("sortBy") || "startDate-asc"
+  const [fieldName, direction] = sortValue.split("-") 
+  const sortedCabins = filteredCabins?.sort((a,b) => direction === "asc" ? a[fieldName] - b[fieldName]: b[fieldName] - a[fieldName])
+  if(error) return toast.error("Can't get cabins data")
+  if(isFetching) return <Spinner />
   return (
     <Menus>
       <Table role = "table" columns= "0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
@@ -29,7 +34,7 @@ function CabinTable() {
           <div>Discount</div>
           <div></div>
         </Table.Header>
-        <Table.Body data = {filteredCabins} render = {cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>}/>
+        <Table.Body data = {sortedCabins} render = {cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>}/>
       </Table>
     </Menus>
   )

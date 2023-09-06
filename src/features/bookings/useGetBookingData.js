@@ -9,12 +9,13 @@ function useGetBookingData() {
     const filter = filterValue === "all" ? null : {field: "status", value: filterValue}
     const [field, direction] = sortValue.split("-")
     const sort = {field, direction}
+    const page = searchParams.get("page") || 1
 
-    const {isLoading: isFetching, data:bookings, error} = useQuery({
-        queryKey: ["bookings", filter, sort],
-        queryFn: () => getAllBookigs(filter, sort)
+    const {isLoading: isFetching, data:{data:bookings, count} = {} , error} = useQuery({
+        queryKey: ["bookings", filter, sort, page],
+        queryFn: () => getAllBookigs(filter, sort, page)
     })
-    return {isFetching, bookings, error}
+    return {isFetching, bookings, count, error}
 }
 
 export default useGetBookingData

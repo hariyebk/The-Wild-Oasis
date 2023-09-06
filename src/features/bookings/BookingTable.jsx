@@ -5,9 +5,10 @@ import useGetBookingData from "./useGetBookingData";
 import Spinner from "../../ui/Spinner";
 import {toast} from "react-hot-toast"
 import Empty from "../../ui/Empty"
+import Pagination from "../../ui/Pagination";
 
 function BookingTable() {
-  const {isFetching, bookings, error} = useGetBookingData()
+  const {isFetching, bookings, count, error} = useGetBookingData()
 
   if(error) return toast.error(error.message)
   if(isFetching) return <Spinner />
@@ -30,6 +31,9 @@ function BookingTable() {
             <BookingRow key={booking.id} booking={booking} />
           )}
         />
+        <Table.Footer>
+            <Pagination count = {count} />
+        </Table.Footer>
       </Table>
     </Menus>
   );

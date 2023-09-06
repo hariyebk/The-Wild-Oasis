@@ -6,6 +6,7 @@ import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import {useSearchParams} from "react-router-dom"
 import Empty from "../../ui/Empty"
+import AddCabin from "./AddCabin";
 
 function CabinTable() {
   const {isFetching, cabin:cabins, error} = useGetCabinData()
@@ -26,7 +27,7 @@ function CabinTable() {
   if(isFetching) return <Spinner />
   if(cabins.length === 0) return <Empty resourceName = "cabins" />
   return (
-    <Menus>
+    <>
       <Table role = "table" columns= "0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
         <Table.Header>
           <div></div>
@@ -38,7 +39,8 @@ function CabinTable() {
         </Table.Header>
         <Table.Body data = {sortedCabins} render = {cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>}/>
       </Table>
-    </Menus>
+      <AddCabin />
+    </>
   )
 }
 

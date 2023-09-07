@@ -14,6 +14,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { Toaster } from "react-hot-toast"
 import { StyleSheetManager } from 'styled-components';
 import isPropValid from '@emotion/is-prop-valid'
+import Booking from "./pages/Booking"
+import CheckIn from "./pages/CheckIn"
+import CheckinSuccess from "./pages/CheckinSuccess"
 // sets up the cache for the remote state behind the scene.
 const queryClient = new QueryClient({
   // configuring the default options for react-query
@@ -35,6 +38,9 @@ function App() {
                   <Route index element = {<Navigate replace to = "/dashboard" />} />
                   <Route path="/dashboard" element = {<Dashboard />} />
                   <Route path="/bookings" element = {<Bookings />} />
+                  <Route path="/bookings/:id" element = {<Booking />} />
+                  <Route path="/checkin/:id" element = {<CheckIn />} />
+                  <Route path="/checkin/:id/success" element = {<CheckinSuccess />} />
                   <Route path="/cabins" element = {<Cabin />} />
                   <Route path="/account" element = {<Account />} />
                   <Route path="/users" element = {<Users />} />

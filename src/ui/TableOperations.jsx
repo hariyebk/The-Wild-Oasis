@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Children, createContext} from "react"
+import {createContext} from "react"
 import SortBy from './SortBy';
 import Filter from "./Filter"
 

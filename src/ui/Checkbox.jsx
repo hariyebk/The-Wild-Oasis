@@ -7,8 +7,7 @@ const StyledCheckbox = styled.div`
   & input[type="checkbox"] {
     height: 2.4rem;
     width: 2.4rem;
-    outline-offset: 2px;
-    transform-origin: 0;
+    outline: none;
     accent-color: var(--color-brand-600);
   }
 

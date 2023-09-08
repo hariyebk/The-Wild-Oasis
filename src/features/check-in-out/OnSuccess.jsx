@@ -16,14 +16,14 @@ const Box = styled.div`
     padding: 10rem 3rem;
     
 `
-function CheckedInSuccess() {
+function OnSuccess({action}) {
     const {id: bookingId} = useParams()
     return <>
         <Box>
             <HiCheckCircle style={{color: "#50C878", fontSize: "65px" }}/>
-            <Heading as="h3"> Booking #{bookingId} has been successfully Checked In </Heading>
+            <Heading as="h3"> Booking #{bookingId} has successfully {action} </Heading>
         </Box>
     </>
 }
 
-export default CheckedInSuccess
+export default OnSuccess

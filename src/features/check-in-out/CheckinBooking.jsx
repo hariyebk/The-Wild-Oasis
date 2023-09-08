@@ -15,7 +15,8 @@ import Empty from "../../ui/Empty";
 import Checkbox from "../../ui/Checkbox"
 import { useEffect, useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
-import useCheckin from "./useCheckin";
+import useCheckinCheckout from "./useCheckinCheckout";
+import useGetSettingData from "../settings/useGetSettingData";
 
 const Box = styled.div`
   /* Box */
@@ -28,7 +29,9 @@ const Box = styled.div`
 function CheckinBooking() {
   const {isFetching, booking, error} = useBooking()
   const [confirmPaid, setConfirmPaid] = useState(false)
-  const {isCheckingIn, checkIn} = useCheckin()
+  const [addBreakfast, setAddBreakfast] = useState(false)
+  const {isLoading: isFetchingSetting, settings} = useGetSettingData()
+  const {isLoading: isCheckingIn, mutate: checkIn} = useCheckinCheckout("checked-in")
 
   useEffect(() => {
     setConfirmPaid(booking?.isPaid || false)
@@ -45,15 +48,29 @@ function CheckinBooking() {
     numNights,
   } = booking || {};
 
-  
+  const breakfastPrice = settings?.breakfastPrice * numNights * numGuests
+
+
   function handleCheckin() {
     if(!confirmPaid) return
-    checkIn(bookingId)
+    if(addBreakfast){
+      checkIn({
+        bookingId,
+        breakfast: {
+          hasBreakfast: true,
+          extrasPrice: breakfastPrice,
+          totalPrice: totalPrice + breakfastPrice
+        }
+      })
+    }
+    else{
+      checkIn({bookingId, breakfast: {}})
+    }
   }
 
 
   if(error) return toast.error("can't get this booking")
-  if(isFetching || isCheckingIn) return <Spinner />
+  if(isFetching || isCheckingIn || isFetchingSetting) return <Spinner />
   if(!booking) return <Empty />
 
   return (
@@ -64,14 +81,23 @@ function CheckinBooking() {
       </Row>
 
       <BookingDataBox booking={booking} />
+      {!hasBreakfast && <Box>
+          <Checkbox
+          checked={addBreakfast}
+          onChange={() => setAddBreakfast((addBreakfast) => !addBreakfast)}
+          id = "breakfast"
+          > 
+            Want to Add a breakfast for {formatCurrency(breakfastPrice)} ?
+          </Checkbox>
+      </Box>}
       <Box>
           <Checkbox
           checked={confirmPaid}
-          disabled= {isPaid ? true : isCheckingIn}
+          disabled= {isPaid ? addBreakfast ? true : false : isCheckingIn}
           onChange={() => setConfirmPaid((confirmPaid) => !confirmPaid)}
           id = "confirm"
           > 
-              I confirm that {guests.fullName} has paid A Total Amount of {formatCurrency(totalPrice)}
+              I confirm that {guests.fullName} has paid A Total Amount of {!addBreakfast ? formatCurrency(totalPrice) : `${formatCurrency(totalPrice + breakfastPrice)} (${formatCurrency(totalPrice)} +  ${formatCurrency(breakfastPrice)} breakfast)`}
           </Checkbox>
       </Box>
       <ButtonGroup>

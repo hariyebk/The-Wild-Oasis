@@ -16,7 +16,7 @@ import { StyleSheetManager } from 'styled-components';
 import isPropValid from '@emotion/is-prop-valid'
 import Booking from "./pages/Booking"
 import CheckIn from "./pages/CheckIn"
-import CheckinSuccess from "./pages/CheckinSuccess"
+import OnSuccess from "./features/check-in-out/OnSuccess"
 // sets up the cache for the remote state behind the scene.
 const queryClient = new QueryClient({
   // configuring the default options for react-query
@@ -40,7 +40,8 @@ function App() {
                   <Route path="/bookings" element = {<Bookings />} />
                   <Route path="/bookings/:id" element = {<Booking />} />
                   <Route path="/checkin/:id" element = {<CheckIn />} />
-                  <Route path="/checkin/:id/success" element = {<CheckinSuccess />} />
+                  <Route path="/checkin/:id/success" element = {<OnSuccess action= "Checked In" />} />
+                  <Route path="/checkout/:id/success" element = {<OnSuccess action= "Checked Out"/>} />
                   <Route path="/cabins" element = {<Cabin />} />
                   <Route path="/account" element = {<Account />} />
                   <Route path="/users" element = {<Users />} />

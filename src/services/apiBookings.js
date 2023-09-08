@@ -17,7 +17,7 @@ export async function getAllBookigs (filter, sort, page){
     ascending: sort.direction === "asc"
   })
   //3.Pagination
-  if(page){
+  if(page && filter?.value === "all"){
     const from = (page - 1) * PAGE_SIZE
     const to = from + PAGE_SIZE - 1
     query = query.range(from, to)

@@ -18,8 +18,11 @@ ${props => props.as === "h3" && css`
     font-size: 2rem;
     font-weight: 400;
 `}
-
-
+${props => props.as === "h4" && css`
+    font-size: 2.5rem;
+    font-weight: 650;
+    text-align: center;
+`}
 `
 
 

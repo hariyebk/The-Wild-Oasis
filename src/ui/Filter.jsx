@@ -45,6 +45,8 @@ function Filter({filter}){
   const currentFilter = searchParams.get(type.at(0)) || type.at(1)[0].value
   function handleClick(value){
     searchParams.set(type.at(0), value)
+    // reversing the page number to one when a filter happens
+    if(searchParams.get("page")) searchParams.set("page", 1)
     setSearchParams(searchParams)
   }
   return (

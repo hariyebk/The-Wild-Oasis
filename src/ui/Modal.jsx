@@ -85,7 +85,7 @@ function Window({children, name}){
             <Button onClick = {() => closeModal()}>
                 <HiXMark />
             </Button>
-                {name === "cabin-form" ? cloneElement(children, {setIsModalOpen: closeModal}): name === "confirm-delete" ? cloneElement(children, {closeModal: closeModal}): cloneElement(children, {setEditShowForm: closeModal})} 
+                {name === "cabin-form" ? cloneElement(children, {setIsModalOpen: closeModal}): name === "confirm-delete" || name === "delete-booking" ? cloneElement(children, {closeModal: closeModal}): cloneElement(children, {setEditShowForm: closeModal})} 
             </StyledModal>
         </Overlay>,
         document.body

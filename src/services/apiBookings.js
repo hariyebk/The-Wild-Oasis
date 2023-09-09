@@ -11,22 +11,24 @@ export async function getAllBookigs (filter, sort, page){
   })
 
   //1. filter
-  if(filter) query = query.eq(filter.field, filter.value)
+  if(filter.value !== "all") query = query.eq(filter.field, filter.value)
   //2. sort
-  if(query) query = query.order(sort.field, {
+  if(sort) query = query.order(sort.field, {
     ascending: sort.direction === "asc"
   })
   //3.Pagination
-  if(page && filter?.value === "all"){
+  if(page){
     const from = (page - 1) * PAGE_SIZE
     const to = from + PAGE_SIZE - 1
     query = query.range(from, to)
-  } 
+  }
+  
   const { data, error, count } = await query
   if(error){
     console.error(error)
     throw new Error("can't get bookings")
   } 
+
   return {data, count}
 }
 

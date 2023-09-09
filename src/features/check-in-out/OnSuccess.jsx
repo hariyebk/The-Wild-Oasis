@@ -2,6 +2,9 @@ import { HiCheckCircle } from "react-icons/hi2"
 import Heading from "../../ui/Heading"
 import {useParams } from "react-router-dom"
 import { styled } from "styled-components"
+import Button from "../../ui/Button"
+import {useNavigate} from "react-router-dom"
+import ButtonGroup from "../../ui/ButtonGroup"
 
 
 const Box = styled.div`
@@ -18,12 +21,19 @@ const Box = styled.div`
 `
 function OnSuccess({action}) {
     const {id: bookingId} = useParams()
+    const navigate = useNavigate()
     return <>
         <Box>
             <HiCheckCircle style={{color: "#50C878", fontSize: "65px" }}/>
             <Heading as="h3"> Booking #{bookingId} has successfully {action} </Heading>
         </Box>
+        <ButtonGroup>
+            <Button variation="secondary"  onClick={() => navigate("/bookings")}>
+                Back to bookings
+            </Button>
+        </ButtonGroup>
     </>
+
 }
 
 export default OnSuccess

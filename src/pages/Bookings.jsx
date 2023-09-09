@@ -7,7 +7,7 @@ function Bookings() {
   return <>
       <Row type="horizontal">
         <Heading as="h1">All bookings</Heading>
-        <TableOperations filter = "bookings" sort = "bookings" />
+        <TableOperations type = "bookings" />
       </Row>
       <BookingTable />
   </>

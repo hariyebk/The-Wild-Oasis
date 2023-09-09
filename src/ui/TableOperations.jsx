@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {createContext} from "react"
 import SortBy from './SortBy';
 import Filter from "./Filter"
+import Search from './Search';
 
 
 const StyledTableOperations = styled.div`
@@ -42,7 +43,8 @@ const options = {
     ]
 }
 
-function TableOperations({filter, sort}) {
+function TableOperations({type}) {
+  // type can be either cabins or bookings
   return <TableOperationsContext.Provider value={{
     CabinFilterField: options.CabinFilterField,
     CabinFilterOptions: options.CabinFilterOptions,
@@ -52,8 +54,9 @@ function TableOperations({filter, sort}) {
     BookingSortOptions: options.BookingSortOptions
   }}>
       <StyledTableOperations>
-            <Filter filter= {filter} />
-            <SortBy sort= {sort} />
+            <Filter filter= {type} />
+            <SortBy sort= {type} />
+            <Search type ={type} />
       </StyledTableOperations>
   </TableOperationsContext.Provider>
 }

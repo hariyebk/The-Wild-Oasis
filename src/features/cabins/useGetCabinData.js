@@ -6,5 +6,6 @@ export default function useGetCabinData(){
         queryKey: ["cabins"],
         queryFn: getCabins
     })
+
     return {isFetching, cabin, error}
 }

@@ -3,14 +3,13 @@ import CabinRow from "./CabinRow";
 import useGetCabinData from "./useGetCabinData";
 import { toast } from "react-hot-toast";
 import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
 import {useSearchParams} from "react-router-dom"
 import Empty from "../../ui/Empty"
 import AddCabin from "./AddCabin";
 
 function CabinTable() {
   const {isFetching, cabin:cabins, error} = useGetCabinData()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const filterValue = searchParams.get("discount") || "all"
   //1. Filter
   let filteredCabins
@@ -23,6 +22,17 @@ function CabinTable() {
   const sortValue = searchParams.get("sortBy") || ""
   const [fieldName, direction] = sortValue.split("-") 
   const sortedCabins = filteredCabins?.sort((a,b) => direction === "asc" ? a[fieldName] - b[fieldName]: b[fieldName] - a[fieldName])
+
+  //3. query
+  const query = +searchParams.get("query") || null
+  let queryCabin
+  if(query) queryCabin = sortedCabins?.filter(cabins => cabins.id === query)
+  if(query && queryCabin?.length === 0){
+    toast.error(`No cabin found with an id of ${query}`)
+    setSearchParams(undefined)
+  } 
+
+
   if(error) return toast.error("Can't get cabins data")
   if(isFetching) return <Spinner />
   if(cabins.length === 0) return <Empty resourceName = "cabins" />
@@ -37,7 +47,7 @@ function CabinTable() {
           <div>Discount</div>
           <div></div>
         </Table.Header>
-        <Table.Body data = {sortedCabins} render = {cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>}/>
+        <Table.Body data = {queryCabin ? queryCabin.length === 0 ? sortedCabins : queryCabin : sortedCabins} render = {cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>}/>
       </Table>
       <AddCabin />
     </>

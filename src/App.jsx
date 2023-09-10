@@ -49,6 +49,7 @@ function App() {
                   <Route path="/checkin/:id" element = {<CheckIn />} />
                   <Route path="/checkin/:id/success" element = {<OnSuccess action= "Checked In" />} />
                   <Route path="/checkout/:id/success" element = {<OnSuccess action= "Checked Out"/>} />
+                  <Route path="/verifyEmail" element = {<OnSuccess action= "signup"/>} />
                   <Route path="/cabins" element = {<Cabin />} />
                   <Route path="/account" element = {<Account />} />
                   <Route path="/users" element = {<Users />} />

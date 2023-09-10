@@ -1,4 +1,4 @@
-import { HiCheckCircle } from "react-icons/hi2"
+import { HiCheckCircle, HiOutlineCheckBadge } from "react-icons/hi2"
 import Heading from "../../ui/Heading"
 import {useParams } from "react-router-dom"
 import { styled } from "styled-components"
@@ -22,6 +22,13 @@ const Box = styled.div`
 function OnSuccess({action}) {
     const {id: bookingId} = useParams()
     const navigate = useNavigate()
+    if(action === "signup")
+        return (
+            <Box>
+                <HiOutlineCheckBadge style={{color: "#50C878", fontSize: "120px" }} />
+                <Heading as="h5"> Thank you for signing up! Before you can start using our services, we need to verify your email address. We've sent a verification link to the email you provided during sign-up. Please check your inbox and click on the link to complete the verification process. If you don't see the email in your inbox, please check your spam or junk folder. </Heading>
+            </Box>
+    )
     return <>
         <Box>
             <HiCheckCircle style={{color: "#50C878", fontSize: "65px" }}/>

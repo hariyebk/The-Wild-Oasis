@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import Heading from "./Heading";
 
-const StyledConfirmDelete = styled.div`
+export const StyledConfirmDelete = styled.div`
   width: 40rem;
   display: flex;
   flex-direction: column;

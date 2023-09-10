@@ -17,6 +17,7 @@ import isPropValid from '@emotion/is-prop-valid'
 import Booking from "./pages/Booking"
 import CheckIn from "./pages/CheckIn"
 import OnSuccess from "./features/check-in-out/OnSuccess"
+import ProtectedRoute from "./ui/ProtectedRoute"
 // sets up the cache for the remote state behind the scene.
 const queryClient = new QueryClient({
   // configuring the default options for react-query
@@ -34,7 +35,13 @@ function App() {
       <StyleSheetManager shouldForwardProp = {(prop) => isPropValid(prop)}>
         <BrowserRouter>
             <Routes>
-              <Route element = {<AppLayout />}>
+              <Route element = {
+                // Authorization
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+
+              }>
                   <Route index element = {<Navigate replace to = "/dashboard" />} />
                   <Route path="/dashboard" element = {<Dashboard />} />
                   <Route path="/bookings" element = {<Bookings />} />

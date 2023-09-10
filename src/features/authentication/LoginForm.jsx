@@ -3,14 +3,14 @@ import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
-import useAuth from "./useAuth";
 import SpinnerMini from "../../ui/SpinnerMini"
+import UseLogin from "./useLogin";
 
 
 function LoginForm() {
   const [email, setEmail] = useState("harunbekri6@gmail.com");
   const [password, setPassword] = useState("test1234");
-  const {isLogging, login} = useAuth()
+  const {isLoggingIn, login} = UseLogin()
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -27,7 +27,7 @@ function LoginForm() {
           // This makes this form better for password managers
           autoComplete="username"
           value={email}
-          disabled = {isLogging}
+          disabled = {isLoggingIn}
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormRowVertical>
@@ -35,14 +35,14 @@ function LoginForm() {
         <Input
           type="password"
           id="password"
-          disabled = {isLogging}
+          disabled = {isLoggingIn}
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormRowVertical>
       <FormRowVertical>
-        <Button size="large">{isLogging ? <SpinnerMini /> : "Login"}</Button>
+        <Button size="large" disabled = {isLoggingIn}>{isLoggingIn ? <SpinnerMini /> : "Login"}</Button>
       </FormRowVertical>
     </Form>
   );

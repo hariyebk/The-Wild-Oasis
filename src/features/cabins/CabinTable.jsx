@@ -26,8 +26,8 @@ function CabinTable() {
   //3. query
   const query = +searchParams.get("query") || null
   let queryCabin
-  if(query) queryCabin = sortedCabins?.filter(cabins => cabins.id === query)
-  if(query && queryCabin?.length === 0){
+  if(query) queryCabin = cabins?.filter(cabins => cabins.id === query)
+  if(query && cabins?.length === 0){
     toast.error(`No cabin found with an id of ${query}`)
     setSearchParams(undefined)
   } 

@@ -18,6 +18,7 @@ import Booking from "./pages/Booking"
 import CheckIn from "./pages/CheckIn"
 import OnSuccess from "./features/check-in-out/OnSuccess"
 import ProtectedRoute from "./ui/ProtectedRoute"
+import DarkModeProvider from "./context/DarkModeContext"
 // sets up the cache for the remote state behind the scene.
 const queryClient = new QueryClient({
   // configuring the default options for react-query
@@ -29,53 +30,59 @@ const queryClient = new QueryClient({
 })
 
 function App() {
-  return <QueryClientProvider client={queryClient} >
-      <ReactQueryDevtools initialIsOpen = {false} />
-      <GlobalStyles/>
-      <StyleSheetManager shouldForwardProp = {(prop) => isPropValid(prop)}>
-        <BrowserRouter>
-            <Routes>
-              <Route element = {
-                // Authorization
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
+  return (
+    <DarkModeProvider>
+        <QueryClientProvider client={queryClient} >
+            <ReactQueryDevtools initialIsOpen = {false} />
+            <GlobalStyles/>
+            <StyleSheetManager shouldForwardProp = {(prop) => isPropValid(prop)}>
+              <BrowserRouter>
+                  <Routes>
+                    <Route element = {
+                      // Authorization
+                      <ProtectedRoute>
+                        <AppLayout />
+                      </ProtectedRoute>
 
-              }>
-                  <Route index element = {<Navigate replace to = "/dashboard" />} />
-                  <Route path="/dashboard" element = {<Dashboard />} />
-                  <Route path="/bookings" element = {<Bookings />} />
-                  <Route path="/bookings/:id" element = {<Booking />} />
-                  <Route path="/checkin/:id" element = {<CheckIn />} />
-                  <Route path="/checkin/:id/success" element = {<OnSuccess action= "Checked In" />} />
-                  <Route path="/checkout/:id/success" element = {<OnSuccess action= "Checked Out"/>} />
-                  <Route path="/verifyEmail" element = {<OnSuccess action= "signup"/>} />
-                  <Route path="/cabins" element = {<Cabin />} />
-                  <Route path="/account" element = {<Account />} />
-                  <Route path="/users" element = {<Users />} />
-                  <Route path="/settings" element = {<Settings />} />
-              </Route>
-              <Route path="/login" element = {<Login />} />
-              <Route path = "/*" element = {<PageNotFound />} />
-            </Routes>
-        </BrowserRouter>
-      </StyleSheetManager>
-      <Toaster position="top-center" gutter={12} containerStyle={{margin: "8px"}} toastOptions={{
-        success: {
-          duration: 3000
-        },
-        error: {
-          duration: 5000
-        },
-        style: {
-          fontSize: "16px",
-          maxWidth: "500px",
-          padding: "16px 24px",
-          backgroundColor: "var(--color-grey-0)",
-          color: "var(--color-grey-700)"
-        }
-      }} />
-    </QueryClientProvider>
+                    }>
+                        <Route index element = {<Navigate replace to = "/dashboard" />} />
+                        <Route path="/dashboard" element = {<Dashboard />} />
+                        <Route path="/bookings" element = {<Bookings />} />
+                        <Route path="/bookings/:id" element = {<Booking />} />
+                        <Route path="/checkin/:id" element = {<CheckIn />} />
+                        <Route path="/checkin/:id/success" element = {<OnSuccess action= "Checked In" />} />
+                        <Route path="/checkout/:id/success" element = {<OnSuccess action= "Checked Out"/>} />
+                        <Route path="/verifyEmail" element = {<OnSuccess action= "signup"/>} />
+                        <Route path="/cabins" element = {<Cabin />} />
+                        <Route path="/account" element = {<Account />} />
+                        <Route path="/users" element = {<Users />} />
+                        <Route path="/settings" element = {<Settings />} />
+                    </Route>
+                    <Route path="/login" element = {<Login />} />
+                    <Route path = "/*" element = {<PageNotFound />} />
+                  </Routes>
+              </BrowserRouter>
+            </StyleSheetManager>
+            <Toaster position="top-center" gutter={12} containerStyle={{margin: "8px"}} toastOptions={{
+              success: {
+                duration: 3000
+              },
+              error: {
+                duration: 5000
+              },
+              style: {
+                fontSize: "16px",
+                maxWidth: "500px",
+                padding: "16px 24px",
+                backgroundColor: "var(--color-grey-0)",
+                color: "var(--color-grey-700)"
+              }
+            }} />
+          </QueryClientProvider>
+  </DarkModeProvider>
+    
+) 
+    
 }
 
 export default App

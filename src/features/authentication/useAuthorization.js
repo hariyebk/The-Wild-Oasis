@@ -5,7 +5,7 @@ function useAuthorization() {
         queryKey: ["user"],
         queryFn: getCurrentUser
     })
-    return {isgettinguser, isAuthenticated: data?.user?.role === "authenticated"}
+    return {isgettinguser, isAuthenticated: data?.user?.role === "authenticated", data}
 }
 
 export default useAuthorization

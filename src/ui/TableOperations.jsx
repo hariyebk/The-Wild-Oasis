@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {createContext} from "react"
+import {Children, createContext} from "react"
 import SortBy from './SortBy';
 import Filter from "./Filter"
 import Search from './Search';
@@ -40,10 +40,17 @@ const options = {
       {value: "startDate-asc", label: "Sort by date (earlier first)"},
       {value: "totalPrice-desc", label: "Sort by amount (high to low)"},
       {value: "totalPrice-asc", label: "Sort by amount (low to high)"}
+    ],
+    DashboardFilterField: "last",
+    DashboardFilterOptions: [
+        { value: '7', label: 'Last 7 days' },
+        { value: '30', label: 'Last 30 days' },
+        { value: '90', label: 'Last 90 days' },
     ]
+
 }
 
-function TableOperations({type}) {
+function TableOperations({children}) {
   // type can be either cabins or bookings
   return <TableOperationsContext.Provider value={{
     CabinFilterField: options.CabinFilterField,
@@ -51,12 +58,12 @@ function TableOperations({type}) {
     CabinSortOptions: options.CabinSortOptions,
     BookingFilterField: options.BookingFilterField,
     BookingFilterOptions: options.BookingFilterOptions,
-    BookingSortOptions: options.BookingSortOptions
+    BookingSortOptions: options.BookingSortOptions,
+    DashboardFilterField: options.DashboardFilterField,
+    DashboardFilterOptions: options.DashboardFilterOptions
   }}>
       <StyledTableOperations>
-            <Filter filter= {type} />
-            <SortBy sort= {type} />
-            <Search type ={type} />
+            {children}
       </StyledTableOperations>
   </TableOperationsContext.Provider>
 }

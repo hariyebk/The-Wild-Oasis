@@ -7,6 +7,7 @@ const StyledStat = styled.div`
   border-radius: var(--border-radius-md);
 
   padding: 1.6rem;
+  margin-top: 2rem;
   display: grid;
   grid-template-columns: 6.4rem 1fr;
   grid-template-rows: auto auto;
@@ -39,6 +40,7 @@ const Title = styled.h5`
   letter-spacing: 0.4px;
   font-weight: 600;
   color: var(--color-grey-500);
+  padding-bottom: 1.5rem;
 `;
 
 const Value = styled.p`

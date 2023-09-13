@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useSearchParams } from "react-router-dom"
-import { getBookingsAfterDate, getStaysAfterDate } from "../../services/apiBookings"
+import { getBookingsAfterDate} from "../../services/apiBookings"
 import { subDays } from "date-fns"
 
 function useRecentBookings() {
@@ -12,7 +12,7 @@ function useRecentBookings() {
         queryKey: ["recent-bookings", lastDate],
         queryFn: () => getBookingsAfterDate(date)
     })
-     //Pre-fetching Stats
+    //  //Pre-fetching Stats
     const date1 = subDays(new Date(), 30).toISOString()
     queryClient.prefetchQuery({
         queryKey: ["recent-bookings", 30],
@@ -21,7 +21,7 @@ function useRecentBookings() {
     const date2 = subDays(new Date(), 90).toISOString()
     queryClient.prefetchQuery({
         queryKey: ["recent-bookings", 90],
-        queryFn: () => getStaysAfterDate(date2)
+        queryFn: () => getBookingsAfterDate(date2)
     })
     return {isLoadingBookings, recentBookings, error}
 }

@@ -40,12 +40,13 @@ const FilterButton = styled.button`
 
 function Filter({filter}){
   const [searchParams, setSearchParams] = useSearchParams()
-  const {CabinFilterField, CabinFilterOptions, BookingFilterField, BookingFilterOptions, DashboardFilterField, DashboardFilterOptions } = useContext(TableOperationsContext)
+  const {CabinFilterField, CabinFilterOptions, BookingFilterField, BookingFilterOptions, DashboardFilterField, DashboardFilterOptions, GuestFilterField, GuestFilterOptions} = useContext(TableOperationsContext)
   let type
   
   if(filter === "cabins") type = [CabinFilterField, CabinFilterOptions]
   if(filter === "bookings") type = [BookingFilterField, BookingFilterOptions]
   if(filter === "dashboard") type = [DashboardFilterField, DashboardFilterOptions]
+  if(filter === "guests") type = [GuestFilterField, GuestFilterOptions]
 
   const currentFilter = searchParams.get(type.at(0)) || type.at(1)[0].value
   function handleClick(value){

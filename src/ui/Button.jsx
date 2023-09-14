@@ -38,6 +38,10 @@ const variations = {
       background-color: var(--color-grey-50);
     }
   `,
+  special: css`
+      background: var(--color-green-100);
+      color: var(--color-brand-50);
+`,
   danger: css`
     color: var(--color-red-100);
     background-color: var(--color-red-700);

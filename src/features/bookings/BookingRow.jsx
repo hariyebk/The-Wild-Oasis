@@ -19,13 +19,14 @@ const Cabin = styled.div`
   font-family: "Sono";
 `;
 
-const Stacked = styled.div`
+export const Stacked = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.4rem;
 
   & span:first-child {
     font-weight: 500;
+    font-size: 1.6rem;
   }
 
   & span:last-child {

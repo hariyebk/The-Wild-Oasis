@@ -46,6 +46,20 @@ const options = {
         { value: '7', label: 'Last 7 days' },
         { value: '30', label: 'Last 30 days' },
         { value: '90', label: 'Last 90 days' },
+    ],
+    GuestFilterField: "Gender",
+    GuestFilterOptions: [
+      {value: "all", label: "All"},
+      {value: "Male", label: "Male"},
+      {value: "Female", label: "Female"},
+    ],
+    GuestSortOptions: [
+        {value: "CreatedDate-asc", label: "Sort by date(recent first)"},
+        {value: "CreatedDate-desc", label: "Sort by date(earlier first)"},
+        {value: "age-asc", label: "Sort by Age(Young to old)"},
+        {value: "age-desc", label: "Sort by Age(Old to young)"},
+        {value: "fullName-asc", label: "Sort by name(A-Z)"},
+        {value: "fullName-desc", label: "Sort by name(Z-A)"}
     ]
 
 }
@@ -60,7 +74,10 @@ function TableOperations({children}) {
     BookingFilterOptions: options.BookingFilterOptions,
     BookingSortOptions: options.BookingSortOptions,
     DashboardFilterField: options.DashboardFilterField,
-    DashboardFilterOptions: options.DashboardFilterOptions
+    DashboardFilterOptions: options.DashboardFilterOptions,
+    GuestFilterField: options.GuestFilterField,
+    GuestFilterOptions: options.GuestFilterOptions,
+    GuestSortOptions: options.GuestSortOptions
   }}>
       <StyledTableOperations>
             {children}

@@ -123,6 +123,13 @@ function Uploader() {
     setIsLoading(false);
   }
 
+  async function uploadGuests(){
+    setIsLoading(true);
+    await deleteGuests();
+    await createGuests();
+    setIsLoading(false);
+  }
+
   return (
     <div
       style={{
@@ -144,6 +151,10 @@ function Uploader() {
 
       <Button onClick={uploadBookings} disabled={isLoading}>
         Upload bookings ONLY
+      </Button>
+
+      <Button onClick={uploadGuests} disabled={isLoading}>
+        Upload guests ONLY
       </Button>
     </div>
   );

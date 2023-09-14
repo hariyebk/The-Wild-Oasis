@@ -7,6 +7,11 @@ import {toast} from "react-hot-toast"
 import Empty from "../../ui/Empty"
 import Pagination from "../../ui/Pagination";
 import {useSearchParams} from "react-router-dom"
+import Button from "../../ui/Button"
+import{ useDarkMode} from "../../context/DarkModeContext"
+import Modal from "../../ui/Modal";
+import CreateCabinForm from "../cabins/CreateCabinForm";
+import AddBooking from "./AddBooking";
 
 function BookingTable() {
   const {isFetching, bookings, count, error} = useGetBookingData()
@@ -23,14 +28,14 @@ function BookingTable() {
   if(bookings?.length === 0) return <Empty resourceName = "bookings" />
   return (
     <Menus>
-      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
+      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr auto">
         <Table.Header>
           <div>Cabin</div>
           <div>Guest</div>
           <div>Dates</div>
           <div>Status</div>
           <div>Amount</div>
-          <div></div>
+          <AddBooking />
         </Table.Header>
 
         <Table.Body

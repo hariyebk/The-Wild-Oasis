@@ -19,6 +19,7 @@ import CheckIn from "./pages/CheckIn"
 import OnSuccess from "./features/check-in-out/OnSuccess"
 import ProtectedRoute from "./ui/ProtectedRoute"
 import DarkModeProvider from "./context/DarkModeContext"
+import Guests from "./pages/Guests"
 // sets up the cache for the remote state behind the scene.
 const queryClient = new QueryClient({
   // configuring the default options for react-query
@@ -49,6 +50,7 @@ function App() {
                         <Route path="/dashboard" element = {<Dashboard />} />
                         <Route path="/bookings" element = {<Bookings />} />
                         <Route path="/bookings/:id" element = {<Booking />} />
+                        <Route path="/guests" element = {<Guests />} />
                         <Route path="/checkin/:id" element = {<CheckIn />} />
                         <Route path="/checkin/:id/success" element = {<OnSuccess action= "Checked In" />} />
                         <Route path="/checkout/:id/success" element = {<OnSuccess action= "Checked Out"/>} />

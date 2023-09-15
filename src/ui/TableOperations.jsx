@@ -54,12 +54,14 @@ const options = {
       {value: "Female", label: "Female"},
     ],
     GuestSortOptions: [
-        {value: "CreatedDate-asc", label: "Sort by date(recent first)"},
-        {value: "CreatedDate-desc", label: "Sort by date(earlier first)"},
-        {value: "age-asc", label: "Sort by Age(Young to old)"},
-        {value: "age-desc", label: "Sort by Age(Old to young)"},
         {value: "fullName-asc", label: "Sort by name(A-Z)"},
-        {value: "fullName-desc", label: "Sort by name(Z-A)"}
+        {value: "fullName-desc", label: "Sort by name(Z-A)"},
+        {value: "nationality-asc", label: "Sort by countries(A-Z)"},
+        {value: "nationality-desc", label: "Sort by countries(Z-A)"},
+        {value: "Diet-asc", label: "Sort by Diet(A-Z)"},
+        {value: "Diet-desc", label: "Sort by Diet(Z-A)"},
+        {value: "Age-asc", label: "Sort by Age(Young to old)"},
+        {value: "Age-desc", label: "Sort by Age(Old to young)"},
     ]
 
 }

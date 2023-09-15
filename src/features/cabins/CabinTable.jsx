@@ -21,7 +21,7 @@ function CabinTable() {
   //2. Sort
   const sortValue = searchParams.get("sortBy") || ""
   const [fieldName, direction] = sortValue.split("-") 
-  const sortedCabins = filteredCabins?.sort((a,b) => direction === "asc" ? a[fieldName] - b[fieldName]: b[fieldName] - a[fieldName])
+  const sortedCabins = filteredCabins?.sort((a,b) => direction === "asc" ? a[fieldName] - b[fieldName] : b[fieldName] - a[fieldName])
 
   //3. query
   const query = +searchParams.get("query") || null

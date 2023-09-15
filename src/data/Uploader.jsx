@@ -116,19 +116,23 @@ function Uploader() {
     setIsLoading(false);
   }
 
-  async function uploadBookings() {
-    setIsLoading(true);
-    await deleteBookings();
-    await createBookings();
-    setIsLoading(false);
+  async function uploadBookings(){
+    setIsLoading(true)
+    await deleteBookings()
+    await createBookings()
+    setIsLoading(false)
   }
 
-  async function uploadGuests(){
+  async function uploadBookingsandGuests() {
     setIsLoading(true);
-    await deleteGuests();
+    await deleteBookings();
+    await deleteGuests()
+    await createBookings();
     await createGuests();
     setIsLoading(false);
   }
+
+
 
   return (
     <div
@@ -149,13 +153,14 @@ function Uploader() {
         Upload ALL
       </Button>
 
-      <Button onClick={uploadBookings} disabled={isLoading}>
-        Upload bookings ONLY
+      <Button onClick={uploadBookingsandGuests} disabled={isLoading}>
+        Upload bookings Only
       </Button>
 
-      <Button onClick={uploadGuests} disabled={isLoading}>
-        Upload guests ONLY
+      <Button onClick={uploadBookingsandGuests} disabled={isLoading}>
+        Upload bookings and guests Together
       </Button>
+
     </div>
   );
 }

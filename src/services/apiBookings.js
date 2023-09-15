@@ -9,7 +9,7 @@ export async function getAllBookigs (filter, sort, page){
   .select('*, cabins(name), guests(fullName, email)', {
     count: "exact"
   })
-
+  
   //1. filter
   if(filter.value !== "all") query = query.eq(filter.field, filter.value)
   //2. sort

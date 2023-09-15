@@ -26,11 +26,11 @@ export const StyledConfirmDelete = styled.div`
 `;
 
 function ConfirmDelete({ resourceName, onConfirm, disabled, closeModal, id}) {
+  const {bookings} = useGetBookingData("allbookings")
   const navigate = useNavigate()
-  const {bookings} = useGetBookingData()
   const referenceBooking = bookings?.find(booking => booking.guestId === id)
   const name = resourceName.split("#")
-  if(name.at(0) === "guest "){
+  if(name.at(0) === "guest " && referenceBooking){
     return (
       // To prevent a foreign key constraint violation in a database. You need to delete the correlated booking first.
         <StyledConfirmDelete>

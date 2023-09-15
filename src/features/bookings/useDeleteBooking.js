@@ -11,10 +11,10 @@ function useDeleteBooking(bookingId) {
         mutationFn: deleteBooking,
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["bookings"]
+                queryKey: ["bookings", "guests"]
             })
             toast.success(`booking #${id || bookingId} has been deleted`)
-            !bookingId && navigate("/bookings")
+            !bookingId && navigate(-1)
         },
         onError: (error) => toast.error(error.message)
     })

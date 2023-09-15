@@ -7,10 +7,6 @@ import {toast} from "react-hot-toast"
 import Empty from "../../ui/Empty"
 import Pagination from "../../ui/Pagination";
 import {useSearchParams} from "react-router-dom"
-import Button from "../../ui/Button"
-import{ useDarkMode} from "../../context/DarkModeContext"
-import Modal from "../../ui/Modal";
-import CreateCabinForm from "../cabins/CreateCabinForm";
 import AddBooking from "./AddBooking";
 
 function BookingTable() {

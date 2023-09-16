@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useDarkMode } from "../context/DarkModeContext";
 
 const StyledFormRow = styled.div`
     display: grid;
@@ -33,15 +34,16 @@ const Label = styled.label`
 
 const Error = styled.span`
     font-size: 1.4rem;
-    color: var(--color-red-700);
+    color: var(--color-${(props) => props.type}-700);
 `;
 
 function FormRow({ label, error, children }) {
+    const {isDarkMode} = useDarkMode()
     return (
         <StyledFormRow>
         {label && <Label htmlFor={children.props.id}>{label}</Label>}
         {children}
-        {error && <Error>{error}</Error>}
+        {error && <Error type = {isDarkMode ? "grey" : "red"}> ⚠️{error}</Error>}
         </StyledFormRow>
     );
 }

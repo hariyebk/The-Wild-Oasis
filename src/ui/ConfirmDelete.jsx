@@ -27,10 +27,10 @@ export const StyledConfirmDelete = styled.div`
 
 function ConfirmDelete({ resourceName, onConfirm, disabled, closeModal, id}) {
   const {bookings} = useGetBookingData("allbookings")
+  const referenceBooking = bookings?.filter(booking => booking.guestId === id)
   const navigate = useNavigate()
-  const referenceBooking = bookings?.find(booking => booking.guestId === id)
   const name = resourceName.split("#")
-  if(name.at(0) === "guest " && referenceBooking){
+  if(name.at(0) === "guest " && referenceBooking?.length !== 0){
     return (
       // To prevent a foreign key constraint violation in a database. You need to delete the correlated booking first.
         <StyledConfirmDelete>
@@ -38,18 +38,18 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, closeModal, id}) {
             To proceed with the requested action, you need to delete the related booking first. Please navigate to the bookings section and delete the booking associated with the guest you wish to modify or delete. Once the booking is removed, you can proceed with your desired operation on the guest record.
           </p>
           <div>
-            <Button variation="secondary" disabled={disabled} onClick={() => closeModal()}>
-                      Cancel
-            </Button>
-            <Button variation="primary" disabled={disabled} onClick={() => navigate(`/bookings/${referenceBooking.id}`)}>
-                      Go to booking
-            </Button>
+              <Button variation="secondary" disabled={disabled} onClick={() => closeModal()}>
+                        Cancel
+              </Button>
+              <Button variation="primary" disabled={disabled} onClick={() => navigate(`/bookings/${referenceBooking.at(0).id}`)}>
+                        Go to booking
+              </Button>
           </div>
         </StyledConfirmDelete>
   )
 }
 
-    else {
+  else {
       return (
           <StyledConfirmDelete>
             <Heading as="h3">Delete {resourceName}</Heading>

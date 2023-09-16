@@ -39,7 +39,7 @@ function GuestTable() {
     //4. QUERY
     const query = searchParams.get("query")
     let queryGuest
-    if(query) queryGuest = guests?.filter(guest => guest.fullName.split(" ").at(0) === query)
+    if(query) queryGuest = guests?.filter(guest => guest?.fullName.split(" ").at(0) === query)
 
     if(query && queryGuest?.length === 0){
         toast.error(`No guest found with a name of ${query.toLowerCase()}`)
@@ -58,8 +58,7 @@ function GuestTable() {
                 <div> Age </div>
                 <div> Diet </div>
                 <div> Country</div>
-                <div></div>
-                {/* <AddNewGuest /> */}
+                <AddNewGuest />
             </Table.Header>
             <Table.Body data={queryGuest ? queryGuest : paginatedGuest} render={guest => <GuestsRow guest = {guest} key = {guest.id} />} />
             <Table.Footer>

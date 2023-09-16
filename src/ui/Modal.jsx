@@ -5,7 +5,7 @@ import {createContext, useContext, useState, cloneElement} from "react"
 import useOnClickOutside from "../hooks/useOnClickOutside";
 
 
-const StyledModal = styled.div`
+export const StyledModal = styled.div`
 position: fixed;
 top: 50%;
 left: 50%;
@@ -17,7 +17,7 @@ padding: 3.2rem 4rem;
 transition: all 0.5s;
 `;
 
-const Overlay = styled.div`
+export const Overlay = styled.div`
 position: fixed;
 top: 0;
 left: 0;
@@ -85,7 +85,7 @@ function Window({children, name}){
             <Button onClick = {() => closeModal()}>
                 <HiXMark />
             </Button>
-                {name === "cabin-form" ? cloneElement(children, {setIsModalOpen: closeModal}): name === "confirm-delete" || name === "delete-booking" || "logout" || "delete-guest" ? cloneElement(children, {closeModal: closeModal}): cloneElement(children, {setEditShowForm: closeModal})} 
+                {name === "cabin-form" ? cloneElement(children, {setIsModalOpen: closeModal}): name === "confirm-delete" || name === "delete-booking" || "logout" || "delete-guest" || "newguest" ? cloneElement(children, {closeModal: closeModal}): cloneElement(children, {setEditShowForm: closeModal})} 
             </StyledModal>
         </Overlay>,
         document.body

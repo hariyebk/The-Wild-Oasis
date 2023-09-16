@@ -27,3 +27,17 @@ export async function DeleteGuest(id) {
 
     return data;
 }
+
+export async function CreateUpdateGuest(id, Guest){
+    let query
+    if(id) query = supabase.from("guests").update({...Guest}).eq("id", id)
+    if(!id) query = supabase.from("guests").insert([{...Guest}])
+    const {data, error} = await query.select("*")
+
+    if(error){
+        console.log(error.message)
+        throw new Error(error)
+    }
+
+    return {data}
+}

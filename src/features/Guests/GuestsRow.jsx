@@ -8,6 +8,7 @@ import Modal from "../../ui/Modal"
 import ConfirmDelete from "../../ui/ConfirmDelete"
 import { HiMiniPencilSquare, HiMiniTrash } from "react-icons/hi2"
 import useDeleteGuest from "./useDeleteGuest"
+import CreateGuestForm from "./CreateGuestForm"
 
 const Name = styled.p`
     font-size: 1.6rem;
@@ -63,6 +64,9 @@ function GuestsRow({guest}) {
                 </Menus>
                     <Modal.Window name = "delete-guest">
                         <ConfirmDelete resourceName= {`guest #${id}`} id={id} disabled={isDeleting} onConfirm={() => deleteGuest(id)}/>
+                    </Modal.Window>
+                    <Modal.Window name = "edit-guest">
+                        <CreateGuestForm Guest={guest} isEditing={true}/>
                     </Modal.Window>
             </Modal>
         </Table.Row>

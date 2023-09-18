@@ -6,9 +6,10 @@ import Table from "../../ui/Table";
 import {useSearchParams} from "react-router-dom"
 import Empty from "../../ui/Empty"
 import AddCabin from "./AddCabin";
+import Pagination from "../../ui/Pagination";
 
 function CabinTable() {
-  const {isFetching, cabin:cabins, error} = useGetCabinData()
+  const {isFetching, cabin:cabins, error, count} = useGetCabinData()
   const [searchParams, setSearchParams] = useSearchParams()
   const filterValue = searchParams.get("discount") || "all"
   //1. Filter
@@ -38,18 +39,20 @@ function CabinTable() {
   if(cabins.length === 0) return <Empty resourceName = "cabins" />
   return (
     <>
-      <Table role = "table" columns= "0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+      <Table role = "table" columns= "1.5fr 2fr 2.2fr 2fr 2fr 1fr">
         <Table.Header>
           <div></div>
           <div>Cabin</div>
           <div>Capacity</div>
           <div>Price</div>
           <div>Discount</div>
-          <div></div>
+          <AddCabin />
         </Table.Header>
         <Table.Body data = {queryCabin ? queryCabin.length === 0 ? sortedCabins : queryCabin : sortedCabins} render = {cabin => <CabinRow cabin = {cabin} key = {cabin.id}/>}/>
+        <Table.Footer>
+                <Pagination count = {count} />
+            </Table.Footer>
       </Table>
-      <AddCabin />
     </>
   )
 }

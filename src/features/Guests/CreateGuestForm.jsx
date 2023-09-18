@@ -4,17 +4,16 @@ import Input from "../../ui/Input"
 import {useForm} from "react-hook-form"
 import Button from "../../ui/Button"
 import useCreateUpdateGuest from "./useCreateUpdateGuest"
-import Spinner from "../../ui/Spinner"
-import { StyledModal} from "../../ui/Modal"
 import styled from "styled-components"
 
-const Select = styled.select`
+export const Select = styled.select`
     background-color: var(--color-grey-0);
     width: 30rem;
     height: 4rem;
     padding-left: 2rem;
+    border: none;
 `
-const Option = styled.option`
+export const Option = styled.option`
     font-size: 2rem;
     font-weight: 500;
 `
@@ -38,10 +37,6 @@ function CreateGuestForm({closeModal, Guest, isEditing}) {
             closeModal()
         }
     }
-
-    if(isLoading) return <StyledModal>
-            <Spinner />
-    </StyledModal>
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} type = {isEditing ? "modal" : "regular"}>
@@ -93,7 +88,6 @@ function CreateGuestForm({closeModal, Guest, isEditing}) {
                         <Option value= "Male"> Male </Option>
                         <Option value = "Female"> Female </Option>
                     </Select>
-
             </FormRow>
 
             <FormRow label = "Age" error = {errors?.Age?.message}>

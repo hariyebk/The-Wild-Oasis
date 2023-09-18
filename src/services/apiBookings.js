@@ -33,10 +33,13 @@ export async function getAllBookigs (filter, sort, page){
 }
 
 export async function getBooking(id) {
+  let Id
+  if(!id) return null
+  Id = typeof id == "number" ? id : Number(id)
   const { data, error } = await supabase
     .from("bookings")
     .select("*, cabins(*), guests(*)")
-    .eq("id", id)
+    .eq("id", Id)
     .single();
 
   if (error) {
@@ -125,4 +128,18 @@ export async function deleteBooking(id) {
     throw new Error("Booking could not be deleted");
   }
   return data;
+}
+
+export async function CreateUpdateBooking(Booking, id){
+    let query
+    if(id) query = supabase.from("bookings").update([...Booking]).eq("id", id)
+    if(!id) query =  supabase.from("bookings").insert([...Booking])
+    const {data, error} = await query.select()
+
+    if(error){
+      console.log(error)
+      throw new Error(error)
+    }
+
+    return data
 }

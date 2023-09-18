@@ -20,6 +20,7 @@ import OnSuccess from "./features/check-in-out/OnSuccess"
 import ProtectedRoute from "./ui/ProtectedRoute"
 import DarkModeProvider from "./context/DarkModeContext"
 import Guests from "./pages/Guests"
+import CreateBookingForm from "./features/bookings/CreateBookingForm"
 // sets up the cache for the remote state behind the scene.
 const queryClient = new QueryClient({
   // configuring the default options for react-query
@@ -49,6 +50,8 @@ function App() {
                         <Route index element = {<Navigate replace to = "/dashboard" />} />
                         <Route path="/dashboard" element = {<Dashboard />} />
                         <Route path="/bookings" element = {<Bookings />} />
+                        <Route path="/bookings/createupdate" element = {<CreateBookingForm />} />
+                        <Route path="/bookings/createupdate/:id" element = {<CreateBookingForm />} />
                         <Route path="/bookings/:id" element = {<Booking />} />
                         <Route path="/guests" element = {<Guests />} />
                         <Route path="/checkin/:id" element = {<CheckIn />} />

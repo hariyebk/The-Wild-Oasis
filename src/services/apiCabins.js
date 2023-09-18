@@ -1,12 +1,14 @@
 import supabase, {supabaseUrl} from "./supabase";
 
 export async function getCabins(){
-    const { data, error } = await supabase.from('cabins').select('*')
+    const { data, error, count } = await supabase.from('cabins').select('*', {
+        count: "exact"
+    })
     if(error){
         console.log(error)
         throw new Error("can't load cabins data")
     }
-    return data
+    return {data, count}
 }
 export async function deleteCabin(id){
     const { data, error } = await supabase.from('cabins').delete().eq('id', id)
@@ -38,12 +40,12 @@ export async function createOrEditCabin(newCabin, id){
     }
     if(!hasImagePath){
         //2. upload the image to supabase bucket
-        const {error: fileUploadError } = await supabase.storage.from('cabin_Img').upload(imageName, newCabin.image)
+        const {error: fileUploadError } = await supabase.storage.from('cabin-images').upload(imageName, newCabin.image)
     
         // If the error occurs while the image is uploading, we have to delete the newly created cabin.
     
         if(fileUploadError){
-            console.log(fileUploadError)
+            console.log(fileUploadError.message)
             // delete if its newly created cabin
             !id && await supabase.from('cabins').delete().eq('id', data.id)
             throw new Error("cabin image could not be uploaded and the cabin was not created ")

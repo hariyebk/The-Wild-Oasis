@@ -1,20 +1,23 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { HiXMark } from "react-icons/hi2"
 import { createPortal } from "react-dom";
 import {createContext, useContext, useState, cloneElement} from "react"
 import useOnClickOutside from "../hooks/useOnClickOutside";
 
-
 export const StyledModal = styled.div`
 position: fixed;
-top: 50%;
+top: 48%;
 left: 50%;
 transform: translate(-50%, -50%);
-background-color: var(--color-grey-0);
-border-radius: var(--border-radius-lg);
-box-shadow: var(--shadow-lg);
+${(props) => 
+    !props.type && css`
+        box-shadow: var(--shadow-lg);
+        background: var(--color-grey-0);
+        border-radius: var(--border-radius-lg);
+`}
 padding: 3.2rem 4rem;
 transition: all 0.5s;
+
 `;
 
 export const Overlay = styled.div`
@@ -82,10 +85,8 @@ function Window({children, name}){
     return createPortal(
         <Overlay>
             <StyledModal ref = {ref}>
-            <Button onClick = {() => closeModal()}>
-                <HiXMark />
-            </Button>
-                {name === "cabin-form" ? cloneElement(children, {setIsModalOpen: closeModal}): name === "confirm-delete" || name === "delete-booking" || "logout" || "delete-guest" || "newguest" ? cloneElement(children, {closeModal: closeModal}): cloneElement(children, {setEditShowForm: closeModal})} 
+                {name === "edit-cabin" ? cloneElement(children, {closeEditForm: closeModal}) : cloneElement(children, {closeModal: closeModal})}
+                {/* {name === "cabin-form" ? cloneElement(children, {setIsModalOpen: closeModal}): name === "confirm-delete" || name === "delete-booking" || "logout" || "delete-guest" || "newguest" ? cloneElement(children, {closeModal: closeModal}): cloneElement(children, {setEditShowForm: closeModal})}  */}
             </StyledModal>
         </Overlay>,
         document.body

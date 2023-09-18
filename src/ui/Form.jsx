@@ -11,13 +11,20 @@ const Form = styled.form`
       border: 1px solid var(--color-grey-100);
       border-radius: var(--border-radius-md);
     `}
+    ${props => 
+    props.type === "special" &&
+    css`
+      margin-left: 18rem;
+      background-color: var(--coloe-grey-0);
+      
+    `
+    }
 
   ${(props) =>
     props.type === "modal" &&
     css`
       width: 80rem;
     `}
-    
   overflow: hidden;
   font-size: 1.4rem;
 `

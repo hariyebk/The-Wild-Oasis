@@ -1,12 +1,14 @@
 import Modal from "../../ui/Modal"
 import CreateCabinForm from "./CreateCabinForm"
 import Button from "../../ui/Button"
+import { useDarkMode } from "../../context/DarkModeContext"
 
 function AddCabin() {
+    const {isDarkMode} = useDarkMode()
     return <>
     <Modal>
         <Modal.Open opensWindowName = "cabin-form">
-            <Button> Add New Cabin </Button>
+            <Button variation = {isDarkMode ? "special" : "primary"} size = "medium" > New </Button>
         </Modal.Open>
         <Modal.Window name = "cabin-form">
             <CreateCabinForm/>
@@ -14,19 +16,5 @@ function AddCabin() {
     </Modal>
     </>
 }
-
-// function AddCabin({isFetching}) {
-//     const [isModalOpen, setIsModalOpen] = useState(false)
-//     return (
-//         <div>
-//             {!isFetching && <Button onClick={() => setIsModalOpen(!isModalOpen)}>
-//             {isModalOpen ? "Hide Form": "Add new Cabin"}
-//             </Button>}
-//             {isModalOpen && <Modal onClose={setIsModalOpen} >
-//                 <CreateCabinForm setIsModalOpen = {setIsModalOpen}/>
-//             </Modal>}
-//         </div>
-//     )
-// }
 
 export default AddCabin

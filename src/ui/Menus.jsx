@@ -82,7 +82,7 @@ function Menus({children}) {
 function Toggle({id}){
   const {openId, closeMenu, openMenu, setPosition} = useContext(MenusContext)
 
-  const handleClick = (e) => { 
+  const handleClick = (e) => {
     e.stopPropagation()
     const rect = e.target.closest("button").getBoundingClientRect();
     setPosition({
@@ -99,7 +99,7 @@ function Toggle({id}){
 }
 function List({children, id}){
   const {openId, position, closeMenu} = useContext(MenusContext)
-  const {ref} = useOnClickOutside(closeMenu, false)
+  const {ref} = useOnClickOutside(closeMenu, true)
   // Display the menu buttons if the current row is clicked
   if(openId !== id) return
   return createPortal (

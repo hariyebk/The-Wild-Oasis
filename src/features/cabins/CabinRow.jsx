@@ -3,10 +3,11 @@ import {formatCurrency} from "../../utils/helpers"
 import Button from "../../ui/Button";
 import CreateCabinForm from "./CreateCabinForm";
 import useDeleteCabin from "./useDeleteCabin";
-import {HiTrash, HiOutlinePencilSquare, HiDocumentDuplicate} from 'react-icons/hi2'
+import {HiTrash, HiOutlinePencilSquare, HiDocumentDuplicate, HiMiniTrash, HiMiniPencilSquare} from 'react-icons/hi2'
 import useCreateAndEdit from "./useCreateAndEdit";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete"
+import Menus from "../../ui/Menus"
 import Table from "../../ui/Table";
 
 const Img = styled.img`
@@ -46,7 +47,7 @@ const StyledDiv = styled.div`
 function CabinRow({cabin}) {
   const {id, name, maxCapacity, regularPrice, discount, image, description} = cabin
   
-  const {isDeleting, mutate} = useDeleteCabin()
+  const {isDeleting, deletecabin} = useDeleteCabin()
   const {mutate: DuplicateCabin} = useCreateAndEdit()
 
   function handleDuplicate (){
@@ -59,6 +60,10 @@ function CabinRow({cabin}) {
       image
     })
   }
+  
+
+
+
   return <Table.Row>
         <Img src = {image} />
         <Cabin>{name}</Cabin>
@@ -66,38 +71,35 @@ function CabinRow({cabin}) {
         <Price>{formatCurrency(regularPrice)}</Price>
         <Discount>{formatCurrency(discount)}</Discount>
         <StyledDiv>
-          <Button variation = "secondary" size = "small" title = "Duplicate cabin" onClick={() => handleDuplicate()} disabled = {isDeleting}>
-            <HiDocumentDuplicate />
-          </Button>
           <Modal>
-
-            <Modal.Open opensWindowName = "edit-form">
-                <Button variation = "secondary" size = "small" title = "Edit cabin"> 
-                    <HiOutlinePencilSquare />
-                </Button>
-            </Modal.Open>
-            <Modal.Window name = "edit-form">
-                <CreateCabinForm cabinTobeEdited = {cabin}/>
-            </Modal.Window>
-
-            <Modal.Open opensWindowName= "confirm-delete">
-                <Button variation = "danger" size = "small" title = "Delete cabin">
-                    <HiTrash />
-                </Button>
-            </Modal.Open>
-            <Modal.Window name = "confirm-delete">
-                  <ConfirmDelete resourceName= "cabin" disabled={isDeleting} onConfirm={() => mutate(id)}/>
-            </Modal.Window>
-          </Modal>
+                <Menus>
+                    <Menus.Menu>
+                        <Menus.Toggle id = {id} />
+                            <Menus.List id={id}>
+                                <Menus.Button icon = {<HiDocumentDuplicate />} onClick= {() => handleDuplicate()} >
+                                        <span> Duplicate cabin </span>
+                                </Menus.Button>
+                                <Modal.Open opensWindowName= "delete-cabin" >
+                                    <Menus.Button icon = {<HiMiniTrash/>}>
+                                        <span> Delete cabin </span>
+                                    </Menus.Button>
+                                </Modal.Open>
+                                <Modal.Open opensWindowName= "edit-cabin">
+                                    <Menus.Button icon = {<HiMiniPencilSquare />}>
+                                        <span> Edit cabin </span>
+                                    </Menus.Button>
+                                </Modal.Open>
+                            </Menus.List>
+                    </Menus.Menu>
+                </Menus>
+                    <Modal.Window name = "delete-cabin">
+                        <ConfirmDelete resourceName= {`cabin #${id}`} id= {id} disabled={isDeleting} onConfirm={() => deletecabin(id)}/>
+                    </Modal.Window>
+                    <Modal.Window name = "edit-cabin">
+                        <CreateCabinForm cabinTobeEdited={cabin}/>
+                    </Modal.Window>
+            </Modal>
         </StyledDiv>
-        {/* <Menus.Menu>
-            <Menus.Toggle id = {id}/>
-            <Menus.List id = {id}>
-                <Menus.Button> Duplicate </Menus.Button>
-                <Menus.Button> Edit </Menus.Button>
-                <Menus.Button> Delete </Menus.Button>
-            </Menus.List>
-        </Menus.Menu> */}
       </Table.Row>
 }
 

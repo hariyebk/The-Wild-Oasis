@@ -5,7 +5,7 @@ import Table from "../../ui/Table";
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 import Menus from "../../ui/Menus";
-import { HiArrowDownOnSquare, HiArrowUpOnSquare, HiEye, HiMiniTrash } from "react-icons/hi2";
+import { HiArrowDownOnSquare, HiArrowUpOnSquare, HiEye, HiMiniPencilSquare, HiMiniTrash } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../ui/Modal"
 import useCheckinCheckout from "../check-in-out/useCheckinCheckout";
@@ -93,6 +93,11 @@ function BookingRow({
                 <Menus.Button icon = {<HiEye/>} onClick={() => navigate(`/bookings/${bookingId}`)}>
                     <span> See details </span>
                 </Menus.Button>
+                {(status === "unconfirmed" || status === "checked-in") && 
+                    <Menus.Button icon = {<HiMiniPencilSquare/>} onClick={() => navigate(`/bookings/createupdate/${bookingId}`)}>
+                        <span> Edit booking </span>
+                    </Menus.Button>
+                }
                 {status === "unconfirmed" && <Menus.Button icon = {<HiArrowDownOnSquare/>} onClick={() => navigate(`/checkin/${bookingId}`)}>
                     <span> Check In </span>
                 </Menus.Button>}
@@ -108,6 +113,7 @@ function BookingRow({
                 }
             </Menus.List>
         </Menus.Menu>
+              
               <Modal.Window name = "delete-booking">
                     <ConfirmDelete resourceName= {`booking #${bookingId}`} onConfirm={() => deletebooking(bookingId)} disabled= {isDeleting}/>
               </Modal.Window>

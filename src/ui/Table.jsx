@@ -2,8 +2,7 @@ import { createContext, useContext } from "react";
 import styled from "styled-components";
 
 const StyledTable = styled.div`
-  border: 1px solid var(--color-grey-200);
-
+  border: 0px solid var(--color-grey-200);
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   border-radius: 7px;
@@ -30,7 +29,7 @@ const StyledHeader = styled(CommonRow)`
 `;
 
 const StyledRow = styled(CommonRow)`
-  padding: 1.2rem 2.4rem;
+  padding: 2rem 2.4rem;
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
@@ -63,7 +62,9 @@ const Empty = styled.p`
 const TableContext = createContext()
 function Table({children, columns}) {
   return <TableContext.Provider value={{columns}}>
-      {children}
+      <StyledTable>
+          {children}
+      </StyledTable>
   </TableContext.Provider>
 }
 

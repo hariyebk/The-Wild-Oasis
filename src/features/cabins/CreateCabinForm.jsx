@@ -6,11 +6,10 @@ import FormRow from "../../ui/FormRow";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
 import useCreateAndEdit from "./useCreateAndEdit";
-import Modal from "../../ui/Modal";
 import Spinner from "../../ui/Spinner";
+import { StyledModal} from "../../ui/Modal";
 
-
-function CreateCabinForm({cabinTobeEdited = {}, setEditShowForm, setIsModalOpen}) {
+function CreateCabinForm({cabinTobeEdited = {}, closeEditForm, closeModal}) {
   // If the cabin has an Id , it means  it's going to be edited
   const isEditing = Boolean(cabinTobeEdited.id)
 
@@ -18,7 +17,7 @@ function CreateCabinForm({cabinTobeEdited = {}, setEditShowForm, setIsModalOpen}
     defaultValues: isEditing && cabinTobeEdited
     })
   // cutom hook to Create and Edit cabin
-  const {isLoading, mutate} = useCreateAndEdit(isEditing, cabinTobeEdited, setEditShowForm, setIsModalOpen)
+  const {isLoading, mutate} = useCreateAndEdit(isEditing, cabinTobeEdited, closeEditForm, closeModal)
 
   const {errors} = formState
 
@@ -31,20 +30,18 @@ function CreateCabinForm({cabinTobeEdited = {}, setEditShowForm, setIsModalOpen}
   }
   function handleCancel(e){
     e.preventDefault()
-    isEditing ? setEditShowForm(false) : setIsModalOpen(false)
+    isEditing ? closeEditForm(false) : closeModal(false)
   }
 
   if(isLoading) return (
-    <Modal>
-      <Modal.Loader>
-          <Spinner />
-      </Modal.Loader>
-    </Modal>
+    <StyledModal type = "spinner">
+        <Spinner />
+    </StyledModal>
 
   )
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)} type = {setIsModalOpen ? "modal" : "regular"}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type = {closeModal ? "modal" : "regular"}>
       <FormRow label = "Cabin name" error = {errors?.name?.message}>
         <Input type="text" id="name" disabled = {isLoading}  {...register("name", {
           required: "This field is required"

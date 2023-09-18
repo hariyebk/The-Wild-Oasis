@@ -26,16 +26,20 @@ export const StyledConfirmDelete = styled.div`
 `;
 
 function ConfirmDelete({ resourceName, onConfirm, disabled, closeModal, id}) {
-  const {bookings} = useGetBookingData("allbookings")
-  const referenceBooking = bookings?.filter(booking => booking.guestId === id)
-  const navigate = useNavigate()
   const name = resourceName.split("#")
-  if(name.at(0) === "guest " && referenceBooking?.length !== 0){
+  const {bookings} = useGetBookingData("allbookings")
+  let referenceBooking
+  if(name.at(0) === "guest ") referenceBooking = bookings?.filter(booking => booking.guestId === id)
+  if(name.at(0) === "cabin ") referenceBooking = bookings?.filter(booking => booking.cabinId === id)
+  const isRelated = name.at(0) === "guest " || name.at(0) === "cabin "
+  console.log(isRelated, referenceBooking)
+  const navigate = useNavigate()
+  if( isRelated && referenceBooking?.length !== 0){
     return (
       // To prevent a foreign key constraint violation in a database. You need to delete the correlated booking first.
         <StyledConfirmDelete>
             <p> 
-            To proceed with the requested action, you need to delete the related booking first. Please navigate to the bookings section and delete the booking associated with the guest you wish to modify or delete. Once the booking is removed, you can proceed with your desired operation on the guest record.
+            To proceed with the requested action, you need to delete the related booking first. Please navigate to the bookings section and delete the booking associated with the {name.at(0)} you wish to modify or delete. Once the booking is removed, you can proceed with your desired operation on the guest record.
           </p>
           <div>
               <Button variation="secondary" disabled={disabled} onClick={() => closeModal()}>
@@ -62,7 +66,11 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, closeModal, id}) {
               <Button variation="secondary" disabled={disabled} onClick={() => closeModal()}>
                 Cancel
               </Button>
-              <Button variation="danger" disabled={disabled} onClick={() => onConfirm()}>
+              <Button variation="danger" disabled={disabled} onClick={() => {
+                closeModal()
+                onConfirm()
+              }
+              }>
                 Delete
               </Button>
             </div>

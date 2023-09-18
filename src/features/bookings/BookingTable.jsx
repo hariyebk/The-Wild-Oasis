@@ -6,12 +6,15 @@ import Spinner from "../../ui/Spinner";
 import {toast} from "react-hot-toast"
 import Empty from "../../ui/Empty"
 import Pagination from "../../ui/Pagination";
-import {useSearchParams} from "react-router-dom"
-import AddBooking from "./AddBooking";
+import {useNavigate, useSearchParams} from "react-router-dom"
+import Button from "../../ui/Button";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 function BookingTable() {
   const {isFetching, bookings, count, error} = useGetBookingData()
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const {isDarkMode} = useDarkMode()
   const query = +searchParams.get("query") || null
   let queryBooking
   if(query) queryBooking = bookings?.filter(booking => booking.id === query)
@@ -31,7 +34,7 @@ function BookingTable() {
           <div>Dates</div>
           <div>Status</div>
           <div>Amount</div>
-          <AddBooking />
+          <Button size = "medium" variation = {isDarkMode ? "special": "primary"} onClick={() => navigate("/bookings/createupdate")}> New </Button>
         </Table.Header>
 
         <Table.Body

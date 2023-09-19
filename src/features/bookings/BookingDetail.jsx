@@ -14,7 +14,7 @@ import { toast } from "react-hot-toast";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
 import { HiArrowDownOnSquare, HiArrowUpOnSquare, HiMiniTrash } from "react-icons/hi2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useCheckinCheckout from "../check-in-out/useCheckinCheckout";
 import useDeleteBooking from "./useDeleteBooking";
 import Modal from "../../ui/Modal"
@@ -27,7 +27,8 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  const {isFetching, booking, error} = useBooking()
+  const {id} = useParams()
+  const {isFetching, booking, error} = useBooking(id)
   const {isDeleting, deletebooking} = useDeleteBooking()
   const navigate = useNavigate()
   const {isLoading:isCheckingOut, mutate: checkout} = useCheckinCheckout("checked-out")

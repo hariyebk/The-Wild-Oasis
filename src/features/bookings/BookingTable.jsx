@@ -9,6 +9,7 @@ import Pagination from "../../ui/Pagination";
 import {useNavigate, useSearchParams} from "react-router-dom"
 import Button from "../../ui/Button";
 import { useDarkMode } from "../../context/DarkModeContext";
+import AddBooking from "./AddBooking";
 
 function BookingTable() {
   const {isFetching, bookings, count, error} = useGetBookingData()
@@ -34,6 +35,7 @@ function BookingTable() {
           <div>Dates</div>
           <div>Status</div>
           <div>Amount</div>
+          {/* <AddBooking /> */}
           <Button size = "medium" variation = {isDarkMode ? "special": "primary"} onClick={() => navigate("/bookings/createupdate")}> New </Button>
         </Table.Header>
 

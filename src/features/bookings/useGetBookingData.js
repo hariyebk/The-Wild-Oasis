@@ -14,7 +14,7 @@ function useGetBookingData(allbookings) {
     const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"))
 
     const {isLoading: isFetching, data:{data:bookings, count} = {} , error} = useQuery({
-        queryKey: ["bookings", filter, sort, page],
+        queryKey: allbookings ? ["bookings", filter] : ["bookings", filter, sort, page],
         queryFn: allbookings ? () => getAllBookigs(filter) : () => getAllBookigs(filter, sort, page)
     })
     const pageCount = Math.ceil(count / PAGE_SIZE)

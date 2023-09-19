@@ -28,3 +28,19 @@ export const formatCurrency = (value) =>
   new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(
     value
   );
+
+  // DATE FORMAT OPTION
+const options = {
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+  timeZoneName: 'short'
+};
+
+export function changeDateFormat(date){
+  return new Date(date).toLocaleString('en-US', options)
+}

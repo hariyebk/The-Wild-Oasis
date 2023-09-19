@@ -104,16 +104,14 @@ function BookingRow({
                 {status === "checked-in" && <Menus.Button icon = {<HiArrowUpOnSquare/>}  onClick={() => checkout(bookingId)}>
                     <span> Check Out </span>
                 </Menus.Button> }
-                {(status === "unconfirmed" || status === "checked-out") && 
-                    <Modal.Open opensWindowName= "delete-booking" >
+                {(status === "checked-out" || status === "unconfirmed") && <Modal.Open opensWindowName= "delete-booking" >
                           <Menus.Button icon = {<HiMiniTrash/>}>
-                          <span> Delete booking </span>
+                              <span> Delete booking </span>
                           </Menus.Button>
-                    </Modal.Open>
+                      </Modal.Open>
                 }
             </Menus.List>
         </Menus.Menu>
-              
               <Modal.Window name = "delete-booking">
                     <ConfirmDelete resourceName= {`booking #${bookingId}`} onConfirm={() => deletebooking(bookingId)} disabled= {isDeleting}/>
               </Modal.Window>

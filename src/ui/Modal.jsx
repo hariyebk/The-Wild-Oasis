@@ -73,9 +73,14 @@ function Modal({children}) {
 
 function Open ({children, opensWindowName}){
     const {openModal} = useContext(ModalContext)
+    // if(opensWindowName === "createupdatebooking") return openModal(opensWindowName)
     // Clones the children element and passes a new prop onClick.
-    return cloneElement(children, {onClick: () => openModal(opensWindowName)})
-
+    if(children){
+        return cloneElement(children, {onClick: () => openModal(opensWindowName)})
+    }
+    else{
+        openModal(opensWindowName)
+    }
 }
 function Window({children, name}){
     const {openName, closeModal} = useContext(ModalContext)

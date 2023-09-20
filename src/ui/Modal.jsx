@@ -79,7 +79,7 @@ function Open ({children, opensWindowName}){
         return cloneElement(children, {onClick: () => openModal(opensWindowName)})
     }
     else{
-        openModal(opensWindowName)
+        return openModal(opensWindowName)
     }
 }
 function Window({children, name}){

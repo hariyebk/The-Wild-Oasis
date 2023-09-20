@@ -46,7 +46,7 @@ function BookingDetail() {
   }
 
   if(error) return toast.error("can't get this booking")
-  if(isFetching) return <Spinner />
+  if(isFetching || isCheckingOut) return <Spinner />
   if(!booking) return <Empty />
   const {status, id:bookingId} = booking
   return <>

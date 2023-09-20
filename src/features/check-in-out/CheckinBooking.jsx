@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
 import useCheckinCheckout from "./useCheckinCheckout";
 import useGetSettingData from "../settings/useGetSettingData";
+import { useParams } from "react-router-dom";
 
 const Box = styled.div`
   /* Box */
@@ -27,7 +28,8 @@ const Box = styled.div`
 `;
 
 function CheckinBooking() {
-  const {isFetching, booking, error} = useBooking()
+  const {id} = useParams()
+  const {isFetching, booking, error} = useBooking(id)
   const [confirmPaid, setConfirmPaid] = useState(false)
   const [addBreakfast, setAddBreakfast] = useState(false)
   const {isLoading: isFetchingSetting, settings} = useGetSettingData()

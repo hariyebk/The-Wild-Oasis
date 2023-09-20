@@ -8,11 +8,11 @@ import useGetCabinData from "../cabins/useGetCabinData"
 import Button from "../../ui/Button"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
-import { changeDateFormat, subtractDates } from "../../utils/helpers"
+import {subtractDates } from "../../utils/helpers"
 import useBooking from "./useBooking"
 import useGetSettingData from "../settings/useGetSettingData"
 import Spinner from "../../ui/Spinner"
-import useCreateBooking from "./useCreateBooking"
+import useCreateUpdateBooking from "./useCreateUpdateBooking"
 import useGetBookingData from "./useGetBookingData"
 import { StyledModal } from "../../ui/Modal"
 
@@ -23,27 +23,19 @@ const Div = styled.div`
     padding: 4rem 6rem;
     gap: 3rem;
 `
-
 function CreateBookingForm({closeModal}) {
     const {id} = useParams()
     const {bookings} = useGetBookingData(true)
     const {settings} = useGetSettingData()
     const {booking} = useBooking(id)
 
-    console.log(booking)
-    
     const navigate = useNavigate()
     const isEditing = Boolean(id)
     const {register, handleSubmit, formState, getValues} = useForm({
-        defaultValue: {
-            "startDate": booking?.startDate,
-            "endDate": booking?.endDate,
-            "numGuests": booking?.numGuests,
-            "numNights": booking?.numNights,
-        }
+        defaultValues: isEditing && booking
     })
     const {errors} = formState
-    const {isLoading, mutate} = useCreateBooking(isEditing ? id : null)
+    const {isLoading, mutate} = useCreateUpdateBooking(isEditing ? id : null)
     const {guests} = useGuests()
     const {cabin: cabins} = useGetCabinData()
 
@@ -88,39 +80,48 @@ function CreateBookingForm({closeModal}) {
         // RE-ORGANIZE THE DATA FROM THE FORM TO SUITE THE DATABASE SCHEMA
         const newData = {...data, cabinId: cabinid, guestId: guestid, numNights: duration, observations: null, cabinPrice: priceforcabin, isPaid: hasPaidToBoolean, hasBreakfast: breakfastToBoolean, totalPrice: Total , startDate: arrivalToIso , endDate: departureToIso}
 
-        mutate(newData)
-        navigate(-1)
+        const editedData = {...data, cabinId: cabinid, guestId: guestid, numNights: duration, hasBreakfast: breakfastToBoolean, isPaid: hasPaidToBoolean, startDate: arrivalToIso , endDate: departureToIso, created_at: booking?.created_at,  totalPrice: Total,  observations: booking?.observations, cabinPrice: priceforcabin}
+        
+        if(isEditing){
+            mutate({
+                booking: editedData,
+                id: booking.id
+            })
+            return navigate(-1)
+        }
+        if(!isEditing){
+            mutate(newData)
+            return navigate(-1)
+        }
     }
+
     function onError(error){
         console.log(error.message)
     }
     
-    if(isLoading || (isEditing && !booking?.id)) return <StyledModal type = "spinner">
+    if(isLoading || (isEditing && !Boolean(booking))) return <StyledModal type = "spinner">
             <Spinner />
         </StyledModal>
 
-    // defaultValue={new Date().toISOString().split('T')[0]}
-    // defaultValue={new Date().toISOString().split('T')[0]} 
-
     return (
     <Form onSubmit={handleSubmit(onSubmit, onError)} type = "modal">
-        <Input id="created_at" disabled = {isLoading} hidden = {true} {...register("created_at", {
+        {!isEditing && <Input id="created_at" disabled = {isLoading} hidden = {true} {...register("created_at", {
             required: "This field is required",
             value: new Date().toISOString()
-            })} />
+            })} />}
 
         <FormRow label = " Arrival date" error = {errors?.startDate?.message}>
-            <Input type="date" disabled = {isLoading}   id="startDate" {...register("startDate", {
+            <Input type="date" id="startDate" disabled = {isLoading} defaultValue={isEditing ? `${new Date(booking?.startDate).getFullYear()}-${String(new Date(booking?.startDate).getMonth() + 1).padStart(2, '0')}-${String(new Date(booking?.startDate).getDate()).padStart(2, '0')}` : ""} {...register("startDate", {
             required: "This field is required",
             valueAsDate: true,
             validate: value => {
-                return subtractDates(value.toISOString(), new Date().toISOString())  >= 0  || "You can't choose past time"
+                return isEditing ? true : subtractDates(value.toISOString(), new Date().toISOString())  >= 0  || "You can't choose past time"
             }
             })} />
         </FormRow>
 
         <FormRow label = "Departure date" error = {errors?.endDate?.message}>
-            <Input type="date" disabled = {isLoading}  id="endDate" {...register("endDate", {
+            <Input type="date" id="endDate" defaultValue={isEditing ? `${new Date(booking?.endDate).getFullYear()}-${String(new Date(booking?.endDate).getMonth() + 1).padStart(2, '0')}-${String(new Date(booking?.endDate).getDate()).padStart(2, '0')}` : ""} disabled = {isLoading}  {...register("endDate", {
             required: "This field is required",
             valueAsDate: true,
             validate: value => {
@@ -130,7 +131,7 @@ function CreateBookingForm({closeModal}) {
         </FormRow>
 
         <FormRow label = "Number of Guests" error = {errors?.numGuests?.message}>
-            <Input type="number" disabled = {isLoading}  id="numGuests" {...register("numGuests", {
+            <Input type="number"  id="numGuests" defaultValue={isEditing ? booking.numGuests : ""} disabled = {isLoading} {...register("numGuests", {
             required: "This field is required",
             valueAsNumber: true,
             min: {
@@ -138,22 +139,28 @@ function CreateBookingForm({closeModal}) {
                 message: "The minimum capacity should 1"
             },
             max: {
-                value: settings?.maxGuestperBooking,
+                value: isEditing ? 10 : settings?.maxGuestperBooking,
                 message: "Maximum number of guests exceeded"
             }
             })} />
         </FormRow>
 
         <FormRow label = "Includes Breakfast ?" error = {errors?.hasBreakfast?.message}>
+            {isEditing ? 
+            <Select id = "hasBreakfast" disabled = {isLoading}  {...register("hasBreakfast")}>
+                <Option value=  {booking.hasBreakfast}> {booking.hasBreakfast ? "Yes": "No"} </Option>
+                <Option value = {booking.hasBreakfast ? false : true}> {booking.hasBreakfast ? "No": "Yes"} </Option>
+            </Select>
+            :
             <Select id = "hasBreakfast" disabled = {isLoading}  {...register("hasBreakfast")}>
                 <Option value=  {true}> Yes </Option>
                 <Option value = {false}> No </Option>
             </Select>
+            }
         </FormRow>
 
-
         <FormRow label = " Breakfast Price" error = {errors?.extrasPrice?.message}>
-            <Input type="number" id="extrasPrice"  disabled = {isLoading}   {...register("extrasPrice", {
+            <Input type="number" id="extrasPrice" defaultValue={isEditing ? booking.extrasPrice : ""} disabled = {isLoading}   {...register("extrasPrice", {
                 required: "This field is required",
                 valueAsNumber: true,
                 validate: value => {
@@ -163,13 +170,30 @@ function CreateBookingForm({closeModal}) {
         </FormRow>
 
         <FormRow label = "status" error = {errors?.status?.message}>
+            {isEditing ?
+            <Select id="status" disabled = {isLoading}  {...register("status")}>
+                <Option value= {booking.status}> {booking.status === "unconfirmed" ? "Unconfirmed" : "Checked-in"} </Option>
+                <Option value= {booking.status === "unconfirmed" ? "checked-in" : "unconfirmed"}> {booking.status === "unconfirmed" ? "Checked-in" : "Unconfirmed"} </Option>
+            </Select>
+            :
             <Select id="status" disabled = {isLoading}  {...register("status")}>
                 <Option value= "unconfirmed"> Unconfirmed </Option>
                 <Option value= "checked-in"> Checked-in </Option>
             </Select>
+            }
         </FormRow>
 
         <FormRow label = " Guest has paid full price ?" error = {errors?.isPaid?.message}>
+            { isEditing ?
+            <Select id="isPaid" disabled = {isLoading}  {...register("isPaid", {
+                validate: value => {
+                    return booking.status !== "checked-in" ?  true : value !== "false" ? true : "guest can't checkin wthout paying first"
+                }
+            })}>
+                <Option value= {booking.isPaid} > {booking.isPaid ? "Yes" : "No"} </Option>
+                <Option value= {booking.isPaid === true ? false : true}> {booking.isPaid ? "No" : "Yes"} </Option>
+            </Select>
+            :
             <Select id="isPaid" disabled = {isLoading}  {...register("isPaid", {
                 validate: value => {
                     return getValues().status !== "checked-in" ?  true : value !== "false" ? true : "guest can't checkin wthout paying first"
@@ -177,10 +201,22 @@ function CreateBookingForm({closeModal}) {
             })}>
                 <Option value= {true} > Yes </Option>
                 <Option value= {false}> No </Option>
-            </Select>    
+            </Select> }   
         </FormRow>
 
-        <FormRow label = "Cabin Id"> 
+        <FormRow label = "Cabin Id">
+            {isEditing ? 
+            <Select id = "cabinId" disabled = {isLoading} {...register("cabinId")}>
+                <Option value = {booking?.cabinId}> {booking?.cabinId} </Option>
+                {freeCabins?.map(cabinId =>  
+                    booking?.cabinId === cabinId ? null : 
+                        <Option value = {cabinId} key={cabinId}>
+                            {cabinId}
+                        </Option>
+                    )
+                }
+            </Select>
+            :
             <Select id = "cabinId" disabled = {isLoading} {...register("cabinId")}>
                 {freeCabins?.map(cabinId =>  
                     <Option value = {cabinId} key={cabinId}>
@@ -188,16 +224,25 @@ function CreateBookingForm({closeModal}) {
                     </Option>)
                 }
             </Select>
+            }
         </FormRow>
 
         <FormRow label = "Guest Id" error = {errors?.guestId?.message}>
+            {isEditing ? 
+            <Select id = "guestId" disabled = {isLoading} {...register("guestId")}>
+                <Option value = {booking?.guestId}> {booking?.guestId} </Option> 
+                {unbookedguests?.map(guestId =>  
+                    <Option value = {guestId} key={guestId}>
+                        {guestId}
+                    </Option>)}
+            </Select>
+            :
             <Select id = "guestId" disabled = {isLoading} {...register("guestId")}>
                 {unbookedguests?.map(guestId =>  
                     <Option value = {guestId} key={guestId}>
                         {guestId}
-                    </Option>)
-                }
-            </Select>
+                    </Option>)}
+            </Select>}
         </FormRow>
 
         <FormRow>

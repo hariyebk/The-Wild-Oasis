@@ -32,7 +32,6 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, closeModal, id}) {
   if(name.at(0) === "guest ") referenceBooking = bookings?.filter(booking => booking.guestId === id)
   if(name.at(0) === "cabin ") referenceBooking = bookings?.filter(booking => booking.cabinId === id)
   const isRelated = name.at(0) === "guest " || name.at(0) === "cabin "
-  console.log(isRelated, referenceBooking)
   const navigate = useNavigate()
   if( isRelated && referenceBooking?.length !== 0){
     return (

@@ -13,15 +13,6 @@ const Main = styled.main`
     background-color: var(--color-grey-50);
     padding: 4rem 4.8rem 6.4rem;
     overflow-y: scroll;
-    &::-webkit-scrollbar {
-    width: 10px;
-}
-
-    &::-webkit-scrollbar-thumb {
-    background-color: #888; /* Set the color of the scrollbar thumb */
-    border-radius: 10px; /* Add rounded corners to the thumb */
-}
-
 `
 const Container = styled.div`
     max-width: 120rem;

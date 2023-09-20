@@ -37,16 +37,16 @@ To streamline their operations and enhance guest experiences, "The Wild Oasis" i
 * React Error Boundary - To display a fallback UI instead of crashing the whole application when an error occurs.
 * Recharts - To visualize data in a visually appealing way.
 * Styled Components - To write CSS styles directly within their JavaScript code and create reusable components.
-* Supabase - For data storage, authentication, and real-time updates.For detailed instructions on setting up and using the Supabase API, refer to the [Supabase documentation](https://supabase.io/docs).
+* Supabase - For data storage, authentication, and real-time updates. For detailed instructions on setting up and using the Supabase API, refer to the [Supabase documentation](https://supabase.io/docs).
 * React Query - For remote state management, data fetching, caching, synchronization, and updating.
+
 
 <p align="center">
     <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg" alt="react"  width="70" height="70"/>
     <img src="https://seeklogo.com/images/R/react-query-logo-1340EA4CE9-seeklogo.com.png" alt="react-query"  width="70" height="70"/>
     <img src ="https://react-hook-form.com/images/logo/react-hook-form-logo-only.png" alt="react-hook-form"  width="70" height="70"/>
-    <img src="https://seeklogo.com/images/S/supabase-logo-AC4F4FCA10-seeklogo.com.png" alt="supabase" width="70" height="70"/>
+    <img src="https://seeklogo.com/images/S/supabase-logo-DCC676FFE2-seeklogo.com.png" alt="supabase" width="70" height="70"/>
     <img src="https://cdn.worldvectorlogo.com/logos/styled-components-1.svg" alt="styled components" width="70" height="70"/>
-
 </p>
 
 

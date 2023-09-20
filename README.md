@@ -41,7 +41,7 @@ To streamline their operations and enhance guest experiences, "The Wild Oasis" i
 * React Query - For remote state management, data fetching, caching, synchronization, and updating.
 
 
-<p align="center">
+<p align="center" style="margin-top: 40px;">
     <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg" alt="react"  width="70" height="70"/>
     <img src="https://seeklogo.com/images/R/react-query-logo-1340EA4CE9-seeklogo.com.png" alt="react-query"  width="70" height="70"/>
     <img src ="https://react-hook-form.com/images/logo/react-hook-form-logo-only.png" alt="react-hook-form"  width="70" height="70"/>

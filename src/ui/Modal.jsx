@@ -9,12 +9,9 @@ position: fixed;
 top: 48%;
 left: 50%;
 transform: translate(-50%, -50%);
-${(props) => 
-    !props.type && css`
-        box-shadow: var(--shadow-lg);
-        background: var(--color-grey-0);
-        border-radius: var(--border-radius-lg);
-`}
+box-shadow: ${props => props.type === "spinner" ? "none": "var(--shadow-lg)"};
+background:  ${props => props.type === "spinner" ? "none": "var(--color-grey-0)"};
+border-radius: var(--border-radius-lg);
 padding: 3.2rem 4rem;
 transition: all 0.5s;
 

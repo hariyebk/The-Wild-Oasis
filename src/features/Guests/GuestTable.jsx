@@ -50,9 +50,10 @@ function GuestTable() {
     if(isFetching) return <Spinner />
     if(error) return toast.error(error.message)
     return (
-        <Table role = "table" columns= "1.5fr 1.8fr 1fr 0.7fr 1.9fr 2.2fr 0.6fr">
+        <Table role = "table" columns= "1.5fr 0.5fr 1.8fr 1fr 0.7fr 1.9fr 1.9fr 0.6fr">
             <Table.Header>
                 <div> Name </div>
+                <div> Id </div>
                 <div> Address </div>
                 <div> Gender </div>
                 <div> Age </div>

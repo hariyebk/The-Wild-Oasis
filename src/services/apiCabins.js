@@ -26,7 +26,7 @@ export async function createOrEditCabin(newCabin, id){
     //1. create the new cabin
     let imageName
     if(!hasImagePath) imageName = `${Math.random()}-${newCabin.image.name.replaceAll("/", "")}`
-    const imagePath = hasImagePath ? newCabin.image : `${supabaseUrl}/storage/v1/object/public/cabin_Img/${imageName}`
+    const imagePath = hasImagePath ? newCabin.image : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`
 
     let query
     if(!id) query = supabase.from('cabins').insert([{...newCabin, image: imagePath}])

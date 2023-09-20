@@ -51,7 +51,7 @@ function BookingRow({
     totalPrice,
     status,
     guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
+    cabins: { name: cabinName, id: cabinId },
   }}) {
   const statusToTagName = {
     "unconfirmed": "blue",
@@ -63,7 +63,7 @@ function BookingRow({
   const {mutate: checkout} = useCheckinCheckout("checked-out")
   return (
     <Table.Row>
-      <Cabin>{cabinName}</Cabin>
+      <Cabin>{cabinId}</Cabin>
 
       <Stacked>
         <span>{guestName}</span>

@@ -28,6 +28,7 @@ function GuestsRow({guest}) {
     return (
         <Table.Row>
             <Name> {fullName} </Name>
+            <p> {id} </p>
             <Stacked>
                 <span> {address} </span>
             </Stacked>

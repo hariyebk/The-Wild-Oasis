@@ -5,7 +5,7 @@ import { styled } from "styled-components"
 
 const StyledSearch = styled.input`
     font-size: 1.4rem;
-    padding: 0.8rem 2rem;
+    padding: 0.8rem 2.2rem;
     border: 1px solid var(--color-grey-100);
     border-radius: var(--border-radius-sm);
     background-color: var(--color-grey-0);
@@ -26,7 +26,7 @@ function Search({type}) {
     }
     return (
         <form onSubmit={handleSubmit}>
-            <StyledSearch type = {type === "guests"? "text" : "number"} placeholder= { type === "guests" ? "Search guests by name": `Search ${type} by id`} value={query} onChange={(e) => setQuery(type === "guests" ? e.target.value : +e.target.value)}/>
+            <StyledSearch type = {type === "guests"? "text" : "number"} placeholder= { type === "guests" ? " 🔍 Search guests by name": `🔍 Search ${type} by id`} value={query} onChange={(e) => setQuery(type === "guests" ? e.target.value : +e.target.value)} />
         </form>
     )
 }

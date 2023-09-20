@@ -26,8 +26,8 @@ export const StyledConfirmDelete = styled.div`
 `;
 
 function ConfirmDelete({ resourceName, onConfirm, disabled, closeModal, id}) {
-  const name = resourceName.split("#")
   const {bookings} = useGetBookingData("allbookings")
+  const name = resourceName.split("#")
   let referenceBooking
   if(name.at(0) === "guest ") referenceBooking = bookings?.filter(booking => booking.guestId === id)
   if(name.at(0) === "cabin ") referenceBooking = bookings?.filter(booking => booking.cabinId === id)

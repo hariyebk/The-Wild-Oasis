@@ -28,10 +28,10 @@ function BookingTable() {
   if(bookings?.length === 0) return <Empty resourceName = "bookings" />
   return (
     <Menus>
-      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr auto">
+      <Table columns="1fr 2fr 2.4fr 1.4fr 1fr auto">
         <Table.Header>
-          <div>Cabin</div>
-          <div>Guest</div>
+          <div>Cabin Id</div>
+          <div>Guest Name</div>
           <div>Dates</div>
           <div>Status</div>
           <div>Amount</div>

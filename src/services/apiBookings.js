@@ -6,7 +6,7 @@ import { PAGE_SIZE } from "../ui/Pagination";
 export async function getAllBookigs (filter, sort, page){
   let query = supabase
   .from('bookings')
-  .select('*, cabins(name), guests(fullName, email)', {
+  .select('*, cabins(name, id), guests(fullName, email)', {
     count: "exact"
   })
   

@@ -127,7 +127,6 @@ font-size: 62.5%;
 body {
 font-family: "Poppins", sans-serif;
 color: var(--color-grey-700);
-
 transition: color 0.3s, background-color 0.3s;
 min-height: 100vh;
 line-height: 1.5;

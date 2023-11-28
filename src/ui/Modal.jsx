@@ -1,12 +1,12 @@
-import styled, { css } from "styled-components";
-import { HiXMark } from "react-icons/hi2"
+import styled from "styled-components";
 import { createPortal } from "react-dom";
 import {createContext, useContext, useState, cloneElement} from "react"
 import useOnClickOutside from "../hooks/useOnClickOutside";
+import { useNavigate } from "react-router-dom";
 
 export const StyledModal = styled.div`
 position: fixed;
-top: 48%;
+top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
 box-shadow: ${props => props.type === "spinner" ? "none": "var(--shadow-lg)"};
@@ -81,7 +81,9 @@ function Open ({children, opensWindowName}){
 }
 function Window({children, name}){
     const {openName, closeModal} = useContext(ModalContext)
-    const {ref} = useOnClickOutside(closeModal)
+    const navigate = useNavigate()
+    const goback = () => navigate(-1)
+    const {ref} = useOnClickOutside(openName === "createupdatebooking" ? goback : closeModal)
     // Portals in React provide a way to render a component's content into a different part of the DOM hierarchy, outside of its parent component. This can be useful in various scenarios where you need to render content at a different DOM location than the component's usual position. Portals are commonly used for creating modals, overlays, or pop-up components. These components often need to be rendered at the top level of the DOM hierarchy to ensure they appear on top of other content and are not affected by the component's z-index stacking context.
     if(openName !== name) return
     return createPortal(

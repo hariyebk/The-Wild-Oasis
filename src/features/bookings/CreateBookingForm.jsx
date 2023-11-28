@@ -20,15 +20,14 @@ const Div = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4rem 6rem;
+    padding: 2rem 3rem;
     gap: 3rem;
 `
-function CreateBookingForm({closeModal}) {
+function CreateBookingForm() {
     const {id} = useParams()
     const {bookings} = useGetBookingData(true)
     const {settings} = useGetSettingData()
     const {booking} = useBooking(id)
-
     const navigate = useNavigate()
     const isEditing = Boolean(id)
     const {register, handleSubmit, formState, getValues} = useForm({
@@ -54,13 +53,20 @@ function CreateBookingForm({closeModal}) {
     function onSubmit(data){
         // CALCULATE THE DURATION THAT THE STAYS BASED ON HIS/HER ARRIVAL AND DEPARTURE DATA
         const millisecondsPerDay = 24 * 60 * 60 * 1000
-        const day1 = new Date(data.endDate)
-        const day2 =  new Date(data.startDate)
-        const duration = Math.floor((day1 - day2) / millisecondsPerDay)
-
-        // CONVERT THE ARRIVAL AND DEPARTURE DATES INTO AN ISO STRING FORMAT
-        const arrivalToIso = new Date(data.startDate).toISOString()
-        const departureToIso = new Date(data.endDate).toISOString()
+        let duration, arrivalToIso, departureToIso
+        if(isEditing){
+            const day1 = new Date(booking?.endDate)
+            const day2 =  new Date(booking?.startDate)
+            duration = Math.floor((day1 - day2) / millisecondsPerDay)
+        }
+        else{
+            const day1 = new Date(Date.now())
+            const day2 = new Date(data.endDate)
+            duration =  Math.floor((day2 - day1) / millisecondsPerDay)
+            // CONVERT THE ARRIVAL AND DEPARTURE DATES INTO AN ISO STRING FORMAT
+            arrivalToIso = new Date(Date.now()).toISOString()
+            departureToIso = new Date(data.endDate).toISOString()
+        }
 
         // CONVERT YES/NO VALUES INTO BOOLEANS
         const breakfastToBoolean = data.hasBreakfast === "true" ? true : false
@@ -78,9 +84,9 @@ function CreateBookingForm({closeModal}) {
         const Total = priceforcabin + data.extrasPrice
 
         // RE-ORGANIZE THE DATA FROM THE FORM TO SUITE THE DATABASE SCHEMA
-        const newData = {...data, cabinId: cabinid, guestId: guestid, numNights: duration, observations: null, cabinPrice: priceforcabin, isPaid: hasPaidToBoolean, hasBreakfast: breakfastToBoolean, totalPrice: Total , startDate: arrivalToIso , endDate: departureToIso}
+        const newData = {...data, cabinId: cabinid, guestId: guestid, numNights: duration, observations: null, cabinPrice: priceforcabin, isPaid: hasPaidToBoolean, hasBreakfast: breakfastToBoolean, totalPrice: Total, startDate: arrivalToIso , endDate: departureToIso, extrasPrice: data.extrasPrice}
 
-        const editedData = {...data, cabinId: cabinid, guestId: guestid, numNights: duration, hasBreakfast: breakfastToBoolean, isPaid: hasPaidToBoolean, startDate: arrivalToIso , endDate: departureToIso, created_at: booking?.created_at,  totalPrice: Total,  observations: booking?.observations, cabinPrice: priceforcabin}
+        const editedData = {created_at: booking?.created_at, cabinId: cabinid, guestId: guestid, numNights: duration, hasBreakfast: breakfastToBoolean, isPaid: hasPaidToBoolean, totalPrice: Total, numGuests: data.numGuests, extrasPrice: data.extrasPrice, status: data.status, observations: booking?.observations, cabinPrice: priceforcabin, startDate: booking?.startDate, endDate: booking?.endDate}
         
         if(isEditing){
             mutate({
@@ -104,32 +110,17 @@ function CreateBookingForm({closeModal}) {
         </StyledModal>
 
     return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)} type = "modal">
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type = "booking">
         {!isEditing && <Input id="created_at" disabled = {isLoading} hidden = {true} {...register("created_at", {
             required: "This field is required",
             value: new Date().toISOString()
             })} />}
-
-        <FormRow label = " Arrival date" error = {errors?.startDate?.message}>
-            <Input type="date" id="startDate" disabled = {isLoading} defaultValue={isEditing ? `${new Date(booking?.startDate).getFullYear()}-${String(new Date(booking?.startDate).getMonth() + 1).padStart(2, '0')}-${String(new Date(booking?.startDate).getDate()).padStart(2, '0')}` : ""} {...register("startDate", {
+        {!isEditing && <FormRow label = "Departure date" error = {errors?.endDate?.message}>
+            <Input type="date" id="endDate" disabled = {isLoading}  {...register("endDate", {
             required: "This field is required",
             valueAsDate: true,
-            validate: value => {
-                return isEditing ? true : subtractDates(value.toISOString(), new Date().toISOString())  >= 0  || "You can't choose past time"
-            }
             })} />
-        </FormRow>
-
-        <FormRow label = "Departure date" error = {errors?.endDate?.message}>
-            <Input type="date" id="endDate" defaultValue={isEditing ? `${new Date(booking?.endDate).getFullYear()}-${String(new Date(booking?.endDate).getMonth() + 1).padStart(2, '0')}-${String(new Date(booking?.endDate).getDate()).padStart(2, '0')}` : ""} disabled = {isLoading}  {...register("endDate", {
-            required: "This field is required",
-            valueAsDate: true,
-            validate: value => {
-                return value - getValues().startDate > 0 || "Departure date must be greater than Arrival date"
-            }
-            })} />
-        </FormRow>
-
+        </FormRow>}
         <FormRow label = "Number of Guests" error = {errors?.numGuests?.message}>
             <Input type="number"  id="numGuests" defaultValue={isEditing ? booking.numGuests : ""} disabled = {isLoading} {...register("numGuests", {
             required: "This field is required",
@@ -163,9 +154,6 @@ function CreateBookingForm({closeModal}) {
             <Input type="number" id="extrasPrice" defaultValue={isEditing ? booking.extrasPrice : ""} disabled = {isLoading}   {...register("extrasPrice", {
                 required: "This field is required",
                 valueAsNumber: true,
-                validate: value => {
-                    return getValues().hasBreakfast === "true" ? value >= settings?.breakfastPrice  ? true : `The minumum breakfast price is ${settings?.breakfastPrice}` : value === 0 ? true : "has breakfast is set to No"
-                }
             })} />
         </FormRow>
 
@@ -248,7 +236,7 @@ function CreateBookingForm({closeModal}) {
         <FormRow>
             <Div>
                 <Button variation="secondary" type="reset" disabled = {isLoading} onClick={() => navigate(-1)}>
-                    Back
+                    Cancel
                 </Button>
                 <Button disabled = {isLoading}> {isEditing ? "Edit Booking" : "Create Booking"} </Button>
             </Div>

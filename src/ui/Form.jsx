@@ -19,6 +19,12 @@ const Form = styled.form`
       
     `
     }
+    ${(props) =>
+    props.type === "booking" &&
+    css`
+      width: 65rem;
+      height:  60rem;
+    `}
 
   ${(props) =>
     props.type === "modal" &&

@@ -131,6 +131,7 @@ export async function deleteBooking(id) {
 }
 
 export async function CreateUpdateBooking(Booking, id){
+    console.log(id)
     let query
     if(id) query = supabase.from("bookings").update({...Booking}).eq("id", id)
     if(!id) query =  supabase.from("bookings").insert([{...Booking}])

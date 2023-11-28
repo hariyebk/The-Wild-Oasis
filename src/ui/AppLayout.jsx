@@ -13,7 +13,7 @@ const Main = styled.main`
     background-color: var(--color-grey-50);
     padding: 4rem 4.8rem 6.4rem;
     overflow-y: scroll;
-    zoom: 80%;
+    zoom: 85%;
 `
 const Container = styled.div`
     max-width: 120rem;

@@ -32,11 +32,9 @@ const StyledToggle = styled.button`
 
 const StyledList = styled.ul`
   position: fixed;
-
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
-
   right: ${(props) => props.position.x}px;
   top: ${(props) => props.position.y}px;
 `;
@@ -84,10 +82,11 @@ function Toggle({id}){
 
   const handleClick = (e) => {
     e.stopPropagation()
+    // when the 3 dots button is clicked it sets the position and openId state
     const rect = e.target.closest("button").getBoundingClientRect();
     setPosition({
-      x: window.innerWidth - rect.width - rect.x,
-      y: rect.y + rect.height + 12,
+      x: window.innerWidth - rect.width - rect.x + 200,
+      y: rect.y + rect.height - 40,
     });
     openId === "" || openId !== id ? openMenu(id) : closeMenu()
   }
@@ -99,14 +98,16 @@ function Toggle({id}){
 }
 function List({children, id}){
   const {openId, position, closeMenu} = useContext(MenusContext)
-  const {ref} = useOnClickOutside(closeMenu, true)
+  const {ref} = useOnClickOutside(closeMenu, false)
   // Display the menu buttons if the current row is clicked
-  if(openId !== id) return
-  return createPortal (
-  <StyledList position = {position}  ref={ref}>
-      {children}
-  </StyledList>, document.body
-  )
+  if(openId === id) {
+    return createPortal (
+    <StyledList position = {position}  ref={ref}>
+        {children}
+    </StyledList>, document.body
+    )
+  }
+  else return null
 }
 
 function Button({children, icon, onClick, disable}){

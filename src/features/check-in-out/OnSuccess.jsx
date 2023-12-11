@@ -35,7 +35,7 @@ function OnSuccess({action}) {
             <Heading as="h3"> Booking #{bookingId} has successfully {action} </Heading>
         </Box>
         <ButtonGroup>
-            <Button variation="secondary"  onClick={() => navigate(-1)}>
+            <Button variation="secondary"  onClick={() => navigate("/")}>
                 back
             </Button>
         </ButtonGroup>

@@ -1,9 +1,6 @@
 # The Wild Oasis
 
-<p text-align = "justify">
-The Wild Oasis is a charming boutique hotel nestled in a serene location, offering 15 luxurious wooden cabins for a truly unforgettable stay.
-To streamline their operations and enhance guest experiences, "The Wild Oasis" is embarking on a project to develop a custom-built Internal Hotel Management App.The main objective of this project is to create a comprehensive application that will handle all aspects of hotel management, including bookings, cabin availability, and guest information. The Internal Hotel Management App will serve as a central hub for hotel staff, providing them with the necessary tools to efficiently manage check-ins, handle reservations, and deliver exceptional customer service.The app will feature an intuitive dashboard that provides insightful analytics. The dashboard will be powered with charts and graphs, offering visual representations of key performance indicators. Hotel staff will be able to analyze total sales, track the number of prepaid customers, monitor the occupancy rate, and gain valuable insights into the hotel's performance.
-</p>
+An Internal Hotel Management Project built as part of my 3 months Internship as a front-end developer at [Trip.com](https://www.trip.com/). The project serves as a central hub for hotel staff, providing them with the necessary tools to efficiently manage check-ins, bookings, cabin availability, and guest information.
 
 
 <h1 align="center">
